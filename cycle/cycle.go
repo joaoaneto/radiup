@@ -6,11 +6,11 @@ import (
 )
 
 type Cycle struct{
-	start Time/*Depois ver como manipula*/
+	start Time
 	end Time
 	type string
 	description string
 	voluntarySuggestion VoluntarySuggestion
-	//Streamer streamerSuggestions
+	StreamerSuggestion StreamerSuggestion
 	contentSuggestion ContentSuggestion
 }

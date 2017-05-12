@@ -2,9 +2,31 @@ package cycle
 
 import (
 	"fmt"
+	"time"
 )
 
+//for storage the user information authentication
+type AuthInfo struct{
+	clientId string
+	secretKey string
+}
+
 type User struct {
-	idSpotify int
-	displayName string
+	name string
+	username string
+	password string //temp... we should search for a real alternative in web scenario
+	birth_day Date
+	email string
+	sex byte
+}
+
+type SimpleUser struct{
+	user User
+	connectivity int
+	authSpotify AuthInfo
+	authDeezer AuthInfo
+}
+
+type AdminUser struct {
+	user User
 }

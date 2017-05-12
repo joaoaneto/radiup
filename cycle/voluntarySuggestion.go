@@ -1,8 +1,8 @@
 package cycle
 
 import (
-		"fmt"
-		"time"
+	"fmt"
+	"time"
 )
 
 type VoluntarySuggestion struct {

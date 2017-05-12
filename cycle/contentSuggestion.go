@@ -9,4 +9,6 @@ type ContentSuggestion struct {
 	description string
 	user User
 	votes int
+	validated bool
+	done bool
 }
