@@ -1,6 +1,6 @@
 package streamer
 
-import("fmt")
+import()
 
 type DataSource struct{
 	sourceId string 

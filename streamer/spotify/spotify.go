@@ -1,15 +1,15 @@
-package streamer
+package spotify
 
-import ()
+import ("radiup/streamer")
 
 const kStreamerSpotify := "SPOTIFY"
 
-/*This is not ok, i think so*/
+/*Quando implementar as classes do Wrapper que irão definir as interfaces, atribuir ela aqui*/
 func newStreamerSpotify() streamer{
 	spotifyStreamer := streamer{name:kStreamerSpotify}
 	return spotifyStreamer
 }
-/*Registra s*/
+/*Registra streamer spotify*/
 func init(){
 	GetStreamerManager().RegisterStreamer(kStreamerSpotify, newStreamerSpotify)
 }	
