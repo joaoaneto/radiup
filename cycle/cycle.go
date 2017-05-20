@@ -6,6 +6,7 @@ import (
 )
 
 type Cycle struct{
+	id int	// temp
 	start Time
 	end Time
 	type string

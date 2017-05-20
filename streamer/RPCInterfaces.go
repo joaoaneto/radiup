@@ -10,7 +10,7 @@ type ContentRPC interface {
 
 type SocialRPC interface {
 	GetFollowers()
-	GetInstant(User u)
+	GetInstant(u User)
 }
 
 type AuthRPC interface {

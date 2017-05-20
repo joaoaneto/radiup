@@ -6,4 +6,3 @@ type DataSource struct{
 	sourceId string 
 	streamer Streamer
 }
-
