@@ -1,12 +1,12 @@
 package repository
 
 import (
-	"radiup/streamer"
+	"github.com/joaoaneto/radiup/streamer"
 )
 
 type IOAuthInfo interface {
-	RegisterOAuthInfo()
-	UpdateOAuthInfo(/*id int OU secretKey string*/)
-	RemoveOAuthInfo(/*id int OU secretKey string*/)
-	SearchOAuthInfo(/*id int OU secretKey string*/)
+	RegisterOAuthInfo(oAuth streamer.OAuthInfo)
+	UpdateOAuthInfo(client_id string, secret_key string)
+	RemoveOAuthInfo(client_id string)
+	SearchOAuthInfo(client_id string) OAuthInfoRep
 }

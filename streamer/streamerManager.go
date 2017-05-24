@@ -1,4 +1,4 @@
-package streamerManager 
+package streamer 
 
 import()
 
