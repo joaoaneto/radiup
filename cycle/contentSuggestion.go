@@ -1,7 +1,6 @@
 package cycle
 
 import (
-	"fmt"
 )
 
 type ContentSuggestion struct {

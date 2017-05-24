@@ -1,12 +1,11 @@
 package repository
 
 import (
-	"radiup/cycle"
+	"teste_go/cycle"
 )
 
-//Does it need updates?
-type VSuggestionManager interface {
-	RegisterVSuggestion()
-	RemoveVSuggestion()
-	SearchVSuggestion()
+type IVoluntarySuggestion interface {
+	RegisterVSuggestion(v cycle.VoluntarySuggestion)
+	//RemoveVSuggestion()
+	SearchVSuggestion(nameUser string) []VoluntarySuggestionRep
 }

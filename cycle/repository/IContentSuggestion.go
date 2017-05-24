@@ -1,12 +1,11 @@
 package repository
 
 import (
-	"radiup/cycle"
+	"teste_go/cycle"
 )
 
-//Does it need updates?
-type CSuggestionManager interface {
-	RegisterCSuggestion()
-	RemoveCSuggestion()
-	SearchCSuggestion()
+type IContentSuggestion interface {
+	RegisterCSuggestion(cs cycle.ContentSuggestion)
+	//RemoveCSuggestion()
+	SearchCSuggestion(nameUser string) []ContentSuggestionRep
 }
