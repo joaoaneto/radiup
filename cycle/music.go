@@ -1,12 +1,12 @@
 package cycle
 
 import (
-	"fmt"
+	
 )
 
 type Music struct {
-	name string
-	artist []string
-	id string
-	source_id int //or string? - come from DataSource
+	Name string
+	Artist []string
+	Id string
+	Source_id int //or string? - come from DataSource
 }

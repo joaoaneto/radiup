@@ -1,7 +1,6 @@
 package cycle
 
-import (
-	"fmt"
+import (	
 	"time"
 )
 
@@ -15,7 +14,7 @@ type User struct {
 	name string
 	username string
 	password string //temp... we should search for a real alternative in web scenario
-	birth_day Date
+	birth_day time.Time
 	email string
 	sex byte
 }
