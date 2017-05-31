@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
-	"teste_go/cycle"
+	"github.com/joaoaneto/radiup/cycle"
 )
 
 type ContentSuggestionRep struct {
@@ -17,14 +17,16 @@ type ContentSuggestionRep struct {
 }
 
 type persistor struct {
+	Session *mgo.Session
 }
 
-func NewPersistor() IContentSuggestion {
-	return persistor{}
+func NewPersistor(pSession *mgo.Session) ContentSuggestionManager {
+	return persistor{pSession}
 }
 
 func (p persistor) RegisterCSuggestion(cs cycle.ContentSuggestion) {
-	session, err := mgo.Dial("localhost")
+	
+	session = p.Session
 
 	if err != nil {
 		panic(err)
@@ -44,9 +46,9 @@ func (p persistor) RegisterCSuggestion(cs cycle.ContentSuggestion) {
 
 }
 
-func (p persistor) SearchCSuggestion(nameUser string) []ContentSuggestionRep {
+func (p persistor) SearchCSuggestion(nameUser interface{}) []ContentSuggestionRep {
 
-	session, err := mgo.Dial("localhost")
+	session = p.Session
 
 	if err != nil {
 		panic(err)

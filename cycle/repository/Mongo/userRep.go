@@ -19,7 +19,6 @@ type UserMGO struct {
 }
 
 type UserPersistence struct {
-
 }
 
 func (up *UserPersistence) CreateUser(u cycle.User) {

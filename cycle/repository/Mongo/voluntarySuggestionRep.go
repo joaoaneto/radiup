@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
-	"teste_go/cycle"
+	"github.com/joaoaneto/radiup/cycle"
 	"time"
 )
 
@@ -15,14 +15,14 @@ type VoluntarySuggestionRep struct {
 	Timestamp time.Time
 }
 
-type persistor struct {
+type vSuggestionPersistor struct {
 }
 
-func NewPersistor() IVoluntarySuggestion {
+func NewPersistor() VoluntarySuggestionManager {
 	return persistor{}
 }
 
-func (p persistor) RegisterVSuggestion(v cycle.VoluntarySuggestion) {
+func (p vSuggestionPersistor) RegisterVSuggestion(v cycle.VoluntarySuggestion) {
 	session, err := mgo.Dial("localhost")
 
 	if err != nil {
@@ -43,7 +43,7 @@ func (p persistor) RegisterVSuggestion(v cycle.VoluntarySuggestion) {
 
 }
 
-func (p persistor) SearchVSuggestion(nameUser string) []VoluntarySuggestionRep {
+func (p vSuggestionPersistor) SearchVSuggestion(nameUser string) []VoluntarySuggestionRep {
 
 	session, err := mgo.Dial("localhost")
 

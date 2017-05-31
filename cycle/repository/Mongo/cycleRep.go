@@ -1,11 +1,11 @@
 package repository
+
 import (
-	"fmt"
 	"time"
 	"log"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/joaoaneto/radiup/cycle"
+    "github.com/joaoaneto/radiup/cycle"
 )
 
 type CycleMGO struct {
@@ -41,7 +41,6 @@ func (cp *CyclePersistence) CreateCycle(c cycle.Cycle) {
     	log.Fatal(err)
     }
 
-    fmt.Printf("Ciclo criado com sucesso!")
 }
 
 func (cp *CyclePersistence) UpdateCycle(registered_id int, start time.Time,
@@ -77,7 +76,6 @@ func (cp *CyclePersistence) UpdateCycle(registered_id int, start time.Time,
     	log.Fatal(err)
     }
 
-    fmt.Println("Ciclo atualizado com sucesso!")
 }
 
 func (cp *CyclePersistence) RemoveCycle(id int) {
@@ -98,7 +96,6 @@ func (cp *CyclePersistence) RemoveCycle(id int) {
     	log.Fatal(err)
     }
 
-    fmt.Println("Ciclo removido com sucesso!")
 }
 
 func (cp *CyclePersistence) SearchCycle(id int) cycle.Cycle {

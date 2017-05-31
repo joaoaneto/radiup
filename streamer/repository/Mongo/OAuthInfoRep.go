@@ -15,11 +15,11 @@ type OAuthInfoRep struct {
 type persistor struct {
 }
 
-func NewPersistor() IOAuthInfo {
+func NewPersistor() OAuthInfoManager {
 	return persistor{}
 }
 
-func (p persistor) RegisterOAuthInfo(oAuth streamer.OAuthInfo){
+func (p persistor) Register(oAuth streamer.OAuthInfo){
 
 	session := get_session()
 
@@ -36,7 +36,7 @@ func (p persistor) RegisterOAuthInfo(oAuth streamer.OAuthInfo){
 
 }
 
-func (p persistor) SearchOAuthInfo(client_id string) OAuthInfoRep {
+func (p persistor) Search(client_id string) OAuthInfoRep {
 
 	session := get_session()
 
@@ -50,7 +50,7 @@ func (p persistor) SearchOAuthInfo(client_id string) OAuthInfoRep {
 	return result
 }
 
-func (p persistor) UpdateOAuthInfo(client_id string, secret_key string) {
+func (p persistor) Update(client_id string, secret_key string) {
 
 	session := get_session()
 
@@ -66,7 +66,7 @@ func (p persistor) UpdateOAuthInfo(client_id string, secret_key string) {
 
 }
 
-func (p persistor) RemoveOAuthInfo(client_id string) {
+func (p persistor) Remove(client_id string) {
 
 	session:= get_session()
 
