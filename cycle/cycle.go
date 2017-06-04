@@ -5,12 +5,12 @@ import (
 )
 
 type Cycle struct{
-	id int	// temp
-	start time.Time
-	end time.Time
+	Id int	// temp
+	Start time.Time
+	End time.Time
 	//type string
-	description string
-	voluntarySuggestion VoluntarySuggestion
+	Description string
+	VoluntarySuggestion VoluntarySuggestion
 	StreamerSuggestion streamerSuggestion
-	contentSuggestion ContentSuggestion
+	ContentSuggestion ContentSuggestion
 }

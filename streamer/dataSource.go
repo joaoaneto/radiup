@@ -3,6 +3,6 @@ package streamer
 import()
 
 type DataSource struct{
-	sourceId string 
-	streamer Streamer
+	SourceId string 
+	_Streamer Streamer
 }

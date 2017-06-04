@@ -1,5 +1,5 @@
 package cycle
 
 type streamerSuggestion struct {
-	musics[] Music
+	Musics[] Music
 }

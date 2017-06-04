@@ -6,26 +6,26 @@ import (
 
 //for storage the user information authentication
 type AuthInfo struct{
-	clientId string
-	secretKey string
+	ClientId string
+	SecretKey string
 }
 
 type User struct {
-	name string
-	username string
-	password string //temp... we should search for a real alternative in web scenario
-	birth_day time.Time
-	email string
-	sex byte
+	Name string
+	Username string
+	Password string //temp... we should search for a real alternative in web scenario
+	Birth_day time.Time
+	Email string
+	Sex byte
 }
 
 type SimpleUser struct{
-	user User
-	connectivity int
-	authSpotify AuthInfo
-	authDeezer AuthInfo
+	User User
+	Connectivity int
+	AuthSpotify AuthInfo
+	AuthDeezer AuthInfo
 }
 
 type AdminUser struct {
-	user User
+	AdminUser User 
 }

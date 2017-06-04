@@ -6,7 +6,7 @@ import (
 
 type VoluntarySuggestion struct {
 	//track Music
-	user      User
-	votes     int
+	V_User      User
+	Votes     int
 	Timestamp time.Time
 }
