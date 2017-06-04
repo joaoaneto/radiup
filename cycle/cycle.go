@@ -10,7 +10,13 @@ type Cycle struct{
 	End time.Time
 	//type string
 	Description string
+<<<<<<< HEAD
+	CycleVoluntarySuggestion VoluntarySuggestion
+	CycleStreamerSuggestion StreamerSuggestion
+	CycleContentSuggestion ContentSuggestion
+=======
 	VoluntarySuggestion VoluntarySuggestion
 	StreamerSuggestion streamerSuggestion
 	ContentSuggestion ContentSuggestion
+>>>>>>> master
 }
