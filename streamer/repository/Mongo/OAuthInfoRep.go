@@ -1,48 +1,36 @@
 package repository
 
 import (
+	"github.com/joaoaneto/radiup"
 	"github.com/joaoaneto/radiup/streamer"
 	"gopkg.in/mgo.v2/bson"
 	"log"
 	"fmt"
 )
 
-type OAuthInfoRep struct {
-	clientID string //anybody gotta update in OAuthInfo entitie
-	SecretKey string 
+type OAuthInfoPersistor struct {
 }
 
-type persistor struct {
+func NewPersistorOAuthInfo() OAuthInfoManager {
+	return OAuthInfoPersistor{}
 }
 
-func NewPersistor() OAuthInfoManager {
-	return persistor{}
-}
+func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo){
 
-func (p persistor) Register(oAuth streamer.OAuthInfo){
-
-	session := get_session()
-
-	//oAuthDef := OAuthInfoRep(oAuth)
-
-	r := session.DB("radiup").C("oAuthInfo")
+	r := STREAMER.GetCollection()
 	err := r.Insert(&oAuth)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Inseriu com sucesso!")
-
 }
 
-func (p persistor) Search(client_id string) OAuthInfoRep {
+func (p OAuthInfoPersistor) Search(clientId string) streamer.OAuthInfo {
 
-	session := get_session()
-
-	r := session.DB("radiup").C("oAuthInfo")
-	result := OAuthInfoRep{}
-	err := r.Find(bson.M{"clientid":client_id}).One(&result)
+	r := STREAMER.GetCollection()
+	result := streamer.OAuthInfo{}
+	err := r.Find(bson.M{"clientid":clientId}).One(&result)
 	if err != nil {
 		panic(err)
 	}
@@ -50,14 +38,12 @@ func (p persistor) Search(client_id string) OAuthInfoRep {
 	return result
 }
 
-func (p persistor) Update(client_id string, secret_key string) {
+func (p OAuthInfoPersistor) Update(clientId string, secretKey string) {
 
-	session := get_session()
+	r := STREAMER.GetCollection()
 
-	r := session.DB("radiup").C("oAuthInfo")
-
-	selectOld := bson.M{"clientid":client_id}
-	change := bson.M{"$set":bson.M{"secretKey":secret_key}}
+	selectOld := bson.M{"clientid":clientId}
+	change := bson.M{"$set":bson.M{"secretKey":secretKey}}
 	err := r.Update(selectOld, change)
 	
 	if err != nil{
@@ -66,13 +52,13 @@ func (p persistor) Update(client_id string, secret_key string) {
 
 }
 
-func (p persistor) Remove(client_id string) {
+func (p OAuthInfoPersistor) Remove(clientId string) {
 
 	session:= get_session()
 
-	r := session.DB("radiup").C("oAuthInfo")
+	r := STREAMER.GetCollection()
 
-	err := r.Remove(bson.M{"clientid": client_id})
+	err := r.Remove(bson.M{"clientid": clientId})
 	if err != nil {
 		panic(err)
 	}
