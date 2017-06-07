@@ -20,35 +20,37 @@ func NewPersistorContentSuggestion() ContentSuggestionPersistor {
 	return ContentSuggestionPersistor{}
 }
 
-func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) {
+func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) string {
 	
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
-	err = c.Insert(&cs)
+	err := c.Insert(&cs)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	return err
+
 }
 
-func (p ContentSuggestionPersistor) Search(nameUser interface{}) []ContentSuggestion{
+func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]ContentSuggestion, string) {
 
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
-	result := []ContentSuggestion{}
+	result := []cycle.ContentSuggestion{}
 
-	err = c.Find(bson.M{"name": nameUser}).One(&result)
+	err := c.Find(bson.M{"name": nameUser}).One(&result)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return result
+	return result, err
 
 }
 
@@ -83,65 +85,71 @@ func NewPersistorCycle() CyclePersistor {
 	return CyclePersistor{}
 }
 
-func (cp CyclePersistor) Create(c cycle.Cycle) {
+func (cp CyclePersistor) Create(c cycle.Cycle) string {
 	
     //defer session.Close()
 
     c := CYCLE.GetCollection()
    
-    err = c.Insert(&c)
+    err := c.Insert(&c)
 
     if err != nil {
     	log.Fatal(err)
     }
 
+	return err
+
 }
 
-func (cp CyclePersistor) Update(registered_id int, start time.Time,
+func (cp CyclePersistor) Update(registeredID int, start time.Time,
 														   end time.Time,
-														   _type string,
+														   cycleType string,
 														   description string,
 														   voluntarySuggestion cycle.VoluntarySuggestion,
 														   streamerSuggestion cycle.StreamerSuggestion,
-														   contentSuggestion cycle.ContentSuggestion) {
+														   contentSuggestion cycle.ContentSuggestion) string {
 	
     //defer session.Close()
 
     c := CYCLE.GetCollection()
     
-    wantedCycle := bson.M{"id" : registered_id}
+    wantedCycle := bson.M{"id" : registeredID}
 
     changes := bson.M{"$set" : bson.M{"start" : start,
 									  "end" : end,
-									  "_type" : _type,
+									  "cycleType" : cycleType,
 									  "description" : description,
 									  "voluntarySuggestion" : voluntarySuggestion,
 									  "streamerSuggestion" : streamerSuggestion
 								  	  "contentSuggestion" : contentSuggestion}}
 
-	err = c.Update(wantedCycle, changes)
+	err := c.Update(wantedCycle, changes)
 
 	if err != nil {
     	log.Fatal(err)
     }
 
+	return err
+
 }
 
-func (cp CyclePersistor) Remove(id int) {
+func (cp CyclePersistor) Remove(id int) string {
 	
 	//defer session.Close()
    
     c := CYCLE.GetCollection()
 
-    err = c.Remove(bson.M{"id" : id})
+    err := c.Remove(bson.M{"id" : id})
 
     if err != nil {
     	log.Fatal(err)
     }
 
+	return err
+
 }
 
-func (cp CyclePersistor) Search(id int) cycle.Cycle {
+func (cp CyclePersistor) Search(id int) (cycle.Cycle, string) {
 
 	result := cycle.Cycle{}
 	
@@ -149,13 +157,13 @@ func (cp CyclePersistor) Search(id int) cycle.Cycle {
 
     c := CYCLE.GetCollection()
 
-    err = c.Find(bson.M{"id" : id}).One(&result)
+    err := c.Find(bson.M{"id" : id}).One(&result)
 
 	if err != nil {
     	log.Fatal(err)
     }
 
-    return result
+    return result, err
 }
 
 
@@ -168,52 +176,56 @@ func NewPersistorMusic() MusicPersistor {
 	return MusicPersistor{}
 }
 
-func (mp MusicPersistor) Register(m cycle.Music){
+func (mp MusicPersistor) Register(m cycle.Music) string {
 	
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
-	err = c.Insert(&m)
+	err := c.Insert(&m)
 
 	if err != nil{
 		log.Fatal(err)
 	}
 
+	return err
+
 }
 
-func (mp MusicPersistor) Remove(id string){
+func (mp MusicPersistor) Remove(id string) string {
 
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
-	err = c.Remove(bson.M{"id" : id})
+	err := c.Remove(bson.M{"id" : id})
 
 	if err != nil{
 		log.Fatal(err)
 	}	
 
+	return err
+
 }
 
-func (mp MusicPersistor) Search(id string){
+func (mp MusicPersistor) Search(id string) (cycle.Music, string) {
 
 	result := cycle.Music{}
 
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c = CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
-	err = c.Find(bson.M{"id" : id }).One(&result)
+	err := c.Find(bson.M{"id" : id }).One(&result)
 
 	if err != nil{
 		log.Fatal(err)
 	}
 
-	return result
+	return result, err
 
 }
 
@@ -226,35 +238,37 @@ func NewPersistorVoluntarySuggestion() VoluntarySuggestionPersistor {
 	return VoluntarySuggestionPersistor{}
 }
 
-func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) {
+func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) string {
 
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
-	err = c.Insert(&v)
+	err := c.Insert(&v)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return err
 
 }
 
-func (p VoluntarySuggestionPersistor) Search(nameUser string) []VoluntarySuggestion {
+func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.VoluntarySuggestion, string) {
 
 	//defer session.Close()
 
 	c := CYCLE.GetCollection()
 
-	result := []VoluntarySuggestion{}
+	result := []cycle.VoluntarySuggestion{}
 
-	err = c.Find(bson.M{"name": nameUser}).One(&result)
+	err := c.Find(bson.M{"name": nameUser}).One(&result)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return result
+	return result, err
 
 }
 
@@ -289,17 +303,19 @@ func NewPersistorUser() UserPersistor {
 	return UserPersistor{}
 }
 
-func (up UserPersistor) Create(u cycle.User) {
+func (up UserPersistor) Create(u cycle.User) string {
 	
 	//defer session.Close()
     
     c := CYCLE.GetCollection()
    
-    err = c.Insert(&u)
+    err := c.Insert(&u)
 
     if err != nil {
     	log.Fatal(err)
     }
+
+	return err
 
 }
 
@@ -308,7 +324,7 @@ func (up UserPersistor) Update(registered_user string,
 									  password string,
 									  birth_day time.Time,
 									  email string,
-									  sex byte) {
+									  sex byte) string {
 	
     //defer session.Close()
  
@@ -322,29 +338,33 @@ func (up UserPersistor) Update(registered_user string,
 							   		  "email" : email,
 							   		  "sex" : sex}}
 
-	err = c.Update(wantedUser, changes)
+	err := c.Update(wantedUser, changes)
 
 	if err != nil {
     	log.Fatal(err)
     }
 
+	return err
+
 }
 
-func (up UserPersistor) Remove(username string) {
+func (up UserPersistor) Remove(username string) string {
 	
 	//defer session.Close()
 
     c := CYCLE.GetCollection()
 
-    err = c.Remove(bson.M{"username" : username})
+    err := c.Remove(bson.M{"username" : username})
 
     if err != nil {
     	log.Fatal(err)
     }
 
+	return err
+
 }
 
-func (up UserPersistor) Search(username string) cycle.User {
+func (up UserPersistor) Search(username string) (cycle.User, string) {
 
 	result := cycle.User{}
 
@@ -352,11 +372,11 @@ func (up UserPersistor) Search(username string) cycle.User {
 
     c := CYCLE.GetCollection()
 
-    err = c.Find(bson.M{"username" : username}).One(&result)
+    err := c.Find(bson.M{"username" : username}).One(&result)
 
 	if err != nil {
     	log.Fatal(err)
     }
 
-    return result
+    return result, err
 }

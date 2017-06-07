@@ -5,15 +5,15 @@ import (
 )
 
 type PlaylistManager interface {
-	Create(p Playlist)
-	Update(playlistID int)
-	Remove(playlistID int)
-	Search(playlistID int) Playlist
+	Create(p playlist.Playlist) string
+	Update(playlistID int) string
+	Remove(playlistID int) string
+	Search(playlistID int) (playlist.Playlist, string)
 }
 
 type PlaylistInfoManager interface {
-	Create(p PlaylistInfo)
-	Update(userID int, playlistID int)
-	Remove(playlistID int)
-	Search(playlistID int) PlaylistInfo
+	Create(p playlist.PlaylistInfo) string
+	Update(userID int, playlistID int) string
+	Remove(playlistID int) string
+	Search(playlistID int) (playlist.PlaylistInfo, string)
 }

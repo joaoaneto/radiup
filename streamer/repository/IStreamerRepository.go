@@ -5,8 +5,8 @@ import (
 )
 
 type OAuthInfoManager interface {
-	Register(oAuth streamer.OAuthInfo)
-	Update(clientId string, secretKey string)
-	Remove(clientId string)
-	Search(clientId string) streamer.OAuthInfo
+	Register(oAuth streamer.OAuthInfo) string
+	Update(clientID string, secretKey string) string
+	Remove(clientID string) string
+	Search(clientID string) (streamer.OAuthInfo, string)
 }

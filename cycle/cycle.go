@@ -4,13 +4,13 @@ import (
 	"time"
 )
 
-type Cycle struct{
-	Id int	// temp
-	Start time.Time
-	End time.Time
-	//type string
-	Description string
+type Cycle struct {
+	ID                       int // temp
+	Start                    time.Time
+	End                      time.Time
+	CycleType                string
+	Description              string
 	CycleVoluntarySuggestion VoluntarySuggestion
-	CycleStreamerSuggestion StreamerSuggestion
-	CycleContentSuggestion ContentSuggestion
+	CycleStreamerSuggestion  StreamerSuggestion
+	CycleContentSuggestion   ContentSuggestion
 }
