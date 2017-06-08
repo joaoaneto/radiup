@@ -3,6 +3,7 @@ package repository
 import (
 	"log"
 
+	db "github.com/joaoaneto/radiup/dbconf"
 	"github.com/joaoaneto/radiup/streamer"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -10,13 +11,13 @@ import (
 type OAuthInfoPersistor struct {
 }
 
-func NewPersistorOAuthInfo() OAuthInfoManager {
+func NewPersistorOAuthInfo() OAuthInfoPersistor {
 	return OAuthInfoPersistor{}
 }
 
-func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo) string {
+func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo) error {
 
-	r := STREAMER.GetCollection()
+	r := db.STREAMER.GetCollection()
 	err := r.Insert(&oAuth)
 
 	if err != nil {
@@ -27,9 +28,9 @@ func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo) string {
 
 }
 
-func (p OAuthInfoPersistor) Search(clientID string) (streamer.OAuthInfo, string) {
+func (p OAuthInfoPersistor) Search(clientID string) (streamer.OAuthInfo, error) {
 
-	r := STREAMER.GetCollection()
+	r := db.STREAMER.GetCollection()
 	result := streamer.OAuthInfo{}
 	err := r.Find(bson.M{"clientid": clientID}).One(&result)
 	if err != nil {
@@ -39,9 +40,9 @@ func (p OAuthInfoPersistor) Search(clientID string) (streamer.OAuthInfo, string)
 	return result, err
 }
 
-func (p OAuthInfoPersistor) Update(clientID string, secretKey string) string {
+func (p OAuthInfoPersistor) Update(clientID string, secretKey string) error {
 
-	r := STREAMER.GetCollection()
+	r := db.STREAMER.GetCollection()
 
 	selectOld := bson.M{"clientid": clientID}
 	change := bson.M{"$set": bson.M{"secretKey": secretKey}}
@@ -55,11 +56,11 @@ func (p OAuthInfoPersistor) Update(clientID string, secretKey string) string {
 
 }
 
-func (p OAuthInfoPersistor) Remove(clientID string) string {
+func (p OAuthInfoPersistor) Remove(clientID string) error {
 
-	session := get_session()
+	//session := get_session()
 
-	r := STREAMER.GetCollection()
+	r := db.STREAMER.GetCollection()
 
 	err := r.Remove(bson.M{"clientid": clientID})
 	if err != nil {
