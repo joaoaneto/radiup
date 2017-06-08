@@ -3,7 +3,7 @@ package streamer
 import()
 
 type Streamer struct{
-	name string
+	Name string
 	/*
 	contentRPC ContentRPC
 	socialRPC SocialRPC

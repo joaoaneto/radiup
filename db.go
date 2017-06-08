@@ -1,9 +1,9 @@
 package main 
 
 import (
-	"fmt"
-	"io/ioutil"
-	"encoding/json"
+//	"fmt"
+//	"io/ioutil"
+//	"encoding/json"
 	"gopkg.in/mgo.v2"
 )
 
@@ -40,7 +40,7 @@ var collections = []string{"CYCLE", "STREAMER", "PLAYLIST"}
 	
 //initialize the session above declared
 func init() {
-	session, err = mgo.Dial("localhost")
+	session, err := mgo.Dial("localhost")
 	if err != nil {
 		panic(err)
 	}
@@ -75,5 +75,5 @@ func (cs ConnectionSetup) GetCollection() *mgo.Collection {
 
 //close the session above declared and initialized
 func CloseSession() {
-	session.close()
+	session.Close()
 }
