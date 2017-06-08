@@ -1,7 +1,7 @@
-package main 
+package dbconf 
 
 import (
-//	"fmt"
+	"fmt"
 //	"io/ioutil"
 //	"encoding/json"
 	"gopkg.in/mgo.v2"
@@ -10,7 +10,16 @@ import (
 //session declaration
 var (
 	session *mgo.Session
+	err error
 )
+
+func init() {
+	session, err = mgo.Dial("localhost")
+	if err != nil {
+		panic(err)
+	}
+	session.SetMode(mgo.Monotonic, true)
+}
 
 //ConnectionData type for future setup connect file
 /*Type ConnectionData struct {
@@ -23,6 +32,7 @@ var (
 
 //Enum interface used for abstract the ConnectionSetup inputs 
 type Enum interface {
+	SetSession()
 	GetCollection() *mgo.Collection
 	//GetConnection() ConnectionData
 }
@@ -39,18 +49,13 @@ const (
 var collections = []string{"CYCLE", "STREAMER", "PLAYLIST"}
 	
 //initialize the session above declared
-func init() {
-	session, err := mgo.Dial("localhost")
-	if err != nil {
-		panic(err)
-	}
-	session.SetMode(mgo.Monotonic, true)
-}
 
 //When it magic happens
 //return mgo.Collection according to subsystem types 
 func (cs ConnectionSetup) GetCollection() *mgo.Collection {
-	return session.DB("radiup").C(collections[cs])
+	c := session.DB("radiup").C(collections[cs])
+	fmt.Print("Collec")
+	return c
 }
 
 //future func for get data of connect setup file

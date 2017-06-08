@@ -4,9 +4,9 @@ import(
 	"fmt"
 	"time"
 	"log"
-	"gopkg.in/mgo.v2"
+	//"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"github.com/joaoaneto/radiup"
+	db "github.com/joaoaneto/radiup/dbconf"
 	"github.com/joaoaneto/radiup/cycle"
 )
 
@@ -20,11 +20,11 @@ func NewPersistorContentSuggestion() ContentSuggestionPersistor {
 	return ContentSuggestionPersistor{}
 }
 
-func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) string {
+func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
 	
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	err := c.Insert(&cs)
 
@@ -36,11 +36,11 @@ func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) string 
 
 }
 
-func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]ContentSuggestion, string) {
+func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.ContentSuggestion, error) {
 
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	result := []cycle.ContentSuggestion{}
 
@@ -85,13 +85,13 @@ func NewPersistorCycle() CyclePersistor {
 	return CyclePersistor{}
 }
 
-func (cp CyclePersistor) Create(c cycle.Cycle) string {
+func (cp CyclePersistor) Create(c cycle.Cycle) error {
 	
     //defer session.Close()
 
-    c := CYCLE.GetCollection()
+    coll := db.CYCLE.GetCollection()
    
-    err := c.Insert(&c)
+    err := coll.Insert(&c)
 
     if err != nil {
     	log.Fatal(err)
@@ -107,11 +107,11 @@ func (cp CyclePersistor) Update(registeredID int, start time.Time,
 														   description string,
 														   voluntarySuggestion cycle.VoluntarySuggestion,
 														   streamerSuggestion cycle.StreamerSuggestion,
-														   contentSuggestion cycle.ContentSuggestion) string {
+														   contentSuggestion cycle.ContentSuggestion) error {
 	
     //defer session.Close()
 
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
     
     wantedCycle := bson.M{"id" : registeredID}
 
@@ -120,7 +120,7 @@ func (cp CyclePersistor) Update(registeredID int, start time.Time,
 									  "cycleType" : cycleType,
 									  "description" : description,
 									  "voluntarySuggestion" : voluntarySuggestion,
-									  "streamerSuggestion" : streamerSuggestion
+									  "streamerSuggestion" : streamerSuggestion,
 								  	  "contentSuggestion" : contentSuggestion}}
 
 	err := c.Update(wantedCycle, changes)
@@ -133,11 +133,11 @@ func (cp CyclePersistor) Update(registeredID int, start time.Time,
 
 }
 
-func (cp CyclePersistor) Remove(id int) string {
+func (cp CyclePersistor) Remove(id int) error {
 	
 	//defer session.Close()
    
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
 
     err := c.Remove(bson.M{"id" : id})
 
@@ -149,13 +149,13 @@ func (cp CyclePersistor) Remove(id int) string {
 
 }
 
-func (cp CyclePersistor) Search(id int) (cycle.Cycle, string) {
+func (cp CyclePersistor) Search(id int) (cycle.Cycle, error) {
 
 	result := cycle.Cycle{}
 	
 	//defer session.Close()
 
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
 
     err := c.Find(bson.M{"id" : id}).One(&result)
 
@@ -176,11 +176,11 @@ func NewPersistorMusic() MusicPersistor {
 	return MusicPersistor{}
 }
 
-func (mp MusicPersistor) Register(m cycle.Music) string {
+func (mp MusicPersistor) Register(m cycle.Music) error {
 	
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
 	err := c.Insert(&m)
@@ -193,11 +193,11 @@ func (mp MusicPersistor) Register(m cycle.Music) string {
 
 }
 
-func (mp MusicPersistor) Remove(id string) string {
+func (mp MusicPersistor) Remove(id string) error {
 
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
 	err := c.Remove(bson.M{"id" : id})
@@ -210,13 +210,13 @@ func (mp MusicPersistor) Remove(id string) string {
 
 }
 
-func (mp MusicPersistor) Search(id string) (cycle.Music, string) {
+func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 
 	result := cycle.Music{}
 
 	//defer session.Close()
 
-	c = CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	/*Insert the music object on DataBase*/
 	err := c.Find(bson.M{"id" : id }).One(&result)
@@ -238,11 +238,11 @@ func NewPersistorVoluntarySuggestion() VoluntarySuggestionPersistor {
 	return VoluntarySuggestionPersistor{}
 }
 
-func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) string {
+func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) error {
 
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	err := c.Insert(&v)
 
@@ -254,11 +254,11 @@ func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) stri
 
 }
 
-func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.VoluntarySuggestion, string) {
+func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.VoluntarySuggestion, error) {
 
 	//defer session.Close()
 
-	c := CYCLE.GetCollection()
+	c := db.CYCLE.GetCollection()
 
 	result := []cycle.VoluntarySuggestion{}
 
@@ -303,14 +303,16 @@ func NewPersistorUser() UserPersistor {
 	return UserPersistor{}
 }
 
-func (up UserPersistor) Create(u cycle.User) string {
+func (up UserPersistor) Create(u cycle.User) error {
 	
 	//defer session.Close()
     
-    c := CYCLE.GetCollection()
-   
-    err := c.Insert(&u)
+    fmt.Print("OLa")
+    c := db.CYCLE.GetCollection()
+   	fmt.Print("Oi")
 
+    err := c.Insert(&u)
+    fmt.Print("Ei")
     if err != nil {
     	log.Fatal(err)
     }
@@ -324,11 +326,11 @@ func (up UserPersistor) Update(registered_user string,
 									  password string,
 									  birth_day time.Time,
 									  email string,
-									  sex byte) string {
+									  sex byte) error {
 	
     //defer session.Close()
  
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
     
     wantedUser := bson.M{"username" : registered_user}
 
@@ -348,11 +350,11 @@ func (up UserPersistor) Update(registered_user string,
 
 }
 
-func (up UserPersistor) Remove(username string) string {
+func (up UserPersistor) Remove(username string) error {
 	
 	//defer session.Close()
 
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
 
     err := c.Remove(bson.M{"username" : username})
 
@@ -364,13 +366,13 @@ func (up UserPersistor) Remove(username string) string {
 
 }
 
-func (up UserPersistor) Search(username string) (cycle.User, string) {
+func (up UserPersistor) Search(username string) (cycle.User, error) {
 
 	result := cycle.User{}
 
     //defer session.Close()
 
-    c := CYCLE.GetCollection()
+    c := db.CYCLE.GetCollection()
 
     err := c.Find(bson.M{"username" : username}).One(&result)
 
