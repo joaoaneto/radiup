@@ -1,15 +1,18 @@
 package spotify
 
-import ("radiup/streamer")
+import (
+	"github.com/joaoaneto/radiup/streamer"
+)
 
-const kStreamerSpotify := "SPOTIFY"
+const kStreamerSpotify string = "SPOTIFY"
 
 /*Quando implementar as classes do Wrapper que irão definir as interfaces, atribuir ela aqui*/
-func newStreamerSpotify() streamer{
-	spotifyStreamer := streamer{name:kStreamerSpotify}
+func newStreamerSpotify() streamer.Streamer {
+	spotifyStreamer := streamer.Streamer{Name: kStreamerSpotify}
 	return spotifyStreamer
 }
+
 /*Registra streamer spotify*/
-func init(){
-	GetStreamerManager().RegisterStreamer(kStreamerSpotify, newStreamerSpotify)
-}	
+func init() {
+	streamer.GetStreamerManager().RegisterStreamer(kStreamerSpotify, newStreamerSpotify)
+}

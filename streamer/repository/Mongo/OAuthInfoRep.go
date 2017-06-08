@@ -1,23 +1,25 @@
-package repository
+package Mongo
 
 import (
 	"log"
 
-	db "github.com/joaoaneto/radiup/dbconf"
+	"github.com/joaoaneto/radiup/dbconf"
 	"github.com/joaoaneto/radiup/streamer"
+	streamerRepository "github.com/joaoaneto/radiup/streamer/repository"
 	"gopkg.in/mgo.v2/bson"
 )
 
 type OAuthInfoPersistor struct {
+	db *dbconf.DbConfig
 }
 
-func NewPersistorOAuthInfo() OAuthInfoPersistor {
-	return OAuthInfoPersistor{}
+func NewPersistorOAuthInfo() streamerRepository.OAuthInfoManager {
+	return &OAuthInfoPersistor{dbconf.NewDbConfig()}
 }
 
 func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo) error {
 
-	r := db.STREAMER.GetCollection()
+	r := p.db.GetCollection(dbconf.STREAMER)
 	err := r.Insert(&oAuth)
 
 	if err != nil {
@@ -30,7 +32,7 @@ func (p OAuthInfoPersistor) Register(oAuth streamer.OAuthInfo) error {
 
 func (p OAuthInfoPersistor) Search(clientID string) (streamer.OAuthInfo, error) {
 
-	r := db.STREAMER.GetCollection()
+	r := p.db.GetCollection(dbconf.STREAMER)
 	result := streamer.OAuthInfo{}
 	err := r.Find(bson.M{"clientid": clientID}).One(&result)
 	if err != nil {
