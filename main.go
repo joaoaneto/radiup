@@ -5,6 +5,7 @@ import (
 	"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/playlist"
+	"github.com/joaoaneto/radiup/dbconf"
 )
 
 func main(){
@@ -21,4 +22,7 @@ func main(){
 
 	playlist := playlist.Playlist{1, music, cycle1}
 	fmt.Println(playlist)
+
+	fmt.Print(dbconf.GetConnectionData().Database)
+
 }
