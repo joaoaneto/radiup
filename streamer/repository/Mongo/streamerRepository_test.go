@@ -7,43 +7,38 @@ import (
 )
 
 func TestRegisterOAuthInfo(t *testing.T) {
-	var i OAuthInfoManager
-	i = NewPersistorOAuthInfo()
+	i := NewPersistorOAuthInfo()
 	newOAuth := streamer.OAuthInfo{ClientID: "testauth", SecretKey: "123456"}
 	err := i.Register(newOAuth)
 
-	if err {
+	if err != nil {
 		t.Errorf("Register (OAuthInfo) fail.")
 	}
 }
 
 func TestUpdateOAuthInfo(t *testing.T) {
-	var i OAuthInfoManager
 	i := NewPersistorOAuthInfo()
 	err := i.Update("testauth", "1234567")
 
-	if err {
+	if err != nil {
 		t.Errorf("Update (OAuthInfo) fail.")
 	}
 }
 
 func TestRemoveOAuthInfo(t *testing.T) {
-	var i OAuthInfoManager
 	i := NewPersistorOAuthInfo()
 	err := i.Remove("testauth")
 
-	if err {
+	if err != nil {
 		t.Errorf("Remove (OAuthInfo) fail.")
 	}
 }
 
-//func TestSearchOAuthInfo(t *testing.T){}
 func TestSearchOAuthInfo(t *testing.T) {
-	var i OAuthInfoManager
 	i := NewPersistorOAuthInfo()
 	oAuthInfos, err := i.Search("testauth")
 
-	if err {
+	if err != nil {
 		t.Errorf("Search (OAuthInfo) fail.")
 	}
 }
