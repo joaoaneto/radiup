@@ -6,25 +6,27 @@ import(
 	"log"
 	//"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	db "github.com/joaoaneto/radiup/dbconf"
+	"github.com/joaoaneto/radiup/dbconf"
 	"github.com/joaoaneto/radiup/cycle"
+	cycleRep "github.com/joaoaneto/radiup/cycle/repository"
 )
 
 /*Implementation of Cycle's repository interfaces*/
 
 /*ContentSuggestion Mongo implementations*/
 type ContentSuggestionPersistor struct {
+	db *dbconf.DbConfig
 }
 
-func NewPersistorContentSuggestion() ContentSuggestionPersistor {
-	return ContentSuggestionPersistor{}
+func NewPersistorContentSuggestion() cycleRep.ContentSuggestionManager {
+	return &ContentSuggestionPersistor{dbconf.NewDbConfig()}
 }
 
 func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
 	
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := p.db.GetCollection(dbconf.CYCLE)
 
 	err := c.Insert(&cs)
 
@@ -40,7 +42,7 @@ func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.Conten
 
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := p.db.GetCollection(dbconf.CYCLE)
 
 	result := []cycle.ContentSuggestion{}
 
@@ -79,17 +81,18 @@ func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.Conten
 /*Cycle Mongo implementations*/
 
 type CyclePersistor struct {
+	db *dbconf.DbConfig
 }
 
-func NewPersistorCycle() CyclePersistor {
-	return CyclePersistor{}
+func NewPersistorCycle() cycleRep.CycleManager {
+	return &CyclePersistor{dbconf.NewDbConfig()}
 }
 
 func (cp CyclePersistor) Create(c cycle.Cycle) error {
 	
     //defer session.Close()
 
-    coll := db.CYCLE.GetCollection()
+    coll := cp.db.GetCollection(dbconf.CYCLE)
    
     err := coll.Insert(&c)
 
@@ -111,7 +114,7 @@ func (cp CyclePersistor) Update(registeredID int, start time.Time,
 	
     //defer session.Close()
 
-    c := db.CYCLE.GetCollection()
+    c := cp.db.GetCollection(dbconf.CYCLE)
     
     wantedCycle := bson.M{"id" : registeredID}
 
@@ -137,7 +140,7 @@ func (cp CyclePersistor) Remove(id int) error {
 	
 	//defer session.Close()
    
-    c := db.CYCLE.GetCollection()
+    c := cp.db.GetCollection(dbconf.CYCLE)
 
     err := c.Remove(bson.M{"id" : id})
 
@@ -155,7 +158,7 @@ func (cp CyclePersistor) Search(id int) (cycle.Cycle, error) {
 	
 	//defer session.Close()
 
-    c := db.CYCLE.GetCollection()
+    c := cp.db.GetCollection(dbconf.CYCLE)
 
     err := c.Find(bson.M{"id" : id}).One(&result)
 
@@ -170,17 +173,18 @@ func (cp CyclePersistor) Search(id int) (cycle.Cycle, error) {
 /*Music Mongo implementations*/
 
 type MusicPersistor struct{
+	db *dbconf DbConfig
 }
 
-func NewPersistorMusic() MusicPersistor {
-	return MusicPersistor{}
+func NewPersistorMusic() cycleRep.MusicManager {
+	return &MusicPersistor{dbconf.NewDbConfig()}
 }
 
 func (mp MusicPersistor) Register(m cycle.Music) error {
 	
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
 	err := c.Insert(&m)
@@ -197,7 +201,7 @@ func (mp MusicPersistor) Remove(id string) error {
 
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
 	err := c.Remove(bson.M{"id" : id})
@@ -216,7 +220,7 @@ func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
 	err := c.Find(bson.M{"id" : id }).One(&result)
@@ -232,17 +236,18 @@ func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 /*VoluntarySuggestion Mongo implementations*/
 
 type VoluntarySuggestionPersistor struct {
+	db *dbconf.DbConfig
 }
 
-func NewPersistorVoluntarySuggestion() VoluntarySuggestionPersistor {
-	return VoluntarySuggestionPersistor{}
+func NewPersistorVoluntarySuggestion() cycleRep.VoluntarySuggestionManager {
+	return &VoluntarySuggestionPersistor{dbconf.NewDbConfig()}
 }
 
 func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) error {
 
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := p.db.GetCollection(dbconf.CYCLE)
 
 	err := c.Insert(&v)
 
@@ -258,7 +263,7 @@ func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.Voluntary
 
 	//defer session.Close()
 
-	c := db.CYCLE.GetCollection()
+	c := p.db.GetCollection(dbconf.CYCLE)
 
 	result := []cycle.VoluntarySuggestion{}
 
@@ -297,10 +302,11 @@ func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.Voluntary
 /*User mongo implementations*/
 
 type UserPersistor struct {
+	db *dbconf.DbConfig
 }
 
-func NewPersistorUser() UserPersistor {
-	return UserPersistor{}
+func NewPersistorUser() cycleRep.UserManager {
+	return &UserPersistor{dbconf.NewDbConfig()}
 }
 
 func (up UserPersistor) Create(u cycle.User) error {
@@ -308,7 +314,7 @@ func (up UserPersistor) Create(u cycle.User) error {
 	//defer session.Close()
     
     fmt.Print("OLa")
-    c := db.CYCLE.GetCollection()
+    c := up.db.GetCollection(dbconf.CYCLE)
    	fmt.Print("Oi")
 
     err := c.Insert(&u)
@@ -330,7 +336,7 @@ func (up UserPersistor) Update(registered_user string,
 	
     //defer session.Close()
  
-    c := db.CYCLE.GetCollection()
+    c := up.db.GetCollection(dbconf.CYCLE)
     
     wantedUser := bson.M{"username" : registered_user}
 
@@ -354,7 +360,7 @@ func (up UserPersistor) Remove(username string) error {
 	
 	//defer session.Close()
 
-    c := db.CYCLE.GetCollection()
+    c := up.db.GetCollection(dbconf.CYCLE)
 
     err := c.Remove(bson.M{"username" : username})
 
@@ -372,7 +378,7 @@ func (up UserPersistor) Search(username string) (cycle.User, error) {
 
     //defer session.Close()
 
-    c := db.CYCLE.GetCollection()
+    c := up.db.GetCollection(dbconf.CYCLE)
 
     err := c.Find(bson.M{"username" : username}).One(&result)
 
