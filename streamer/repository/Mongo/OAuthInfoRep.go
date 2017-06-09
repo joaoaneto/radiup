@@ -44,7 +44,7 @@ func (p OAuthInfoPersistor) Search(clientID string) (streamer.OAuthInfo, error) 
 
 func (p OAuthInfoPersistor) Update(clientID string, secretKey string) error {
 
-	r := db.STREAMER.GetCollection()
+	r := p.db.GetCollection(dbconf.STREAMER)
 
 	selectOld := bson.M{"clientid": clientID}
 	change := bson.M{"$set": bson.M{"secretKey": secretKey}}
@@ -62,7 +62,7 @@ func (p OAuthInfoPersistor) Remove(clientID string) error {
 
 	//session := get_session()
 
-	r := db.STREAMER.GetCollection()
+	r := p.db.GetCollection(dbconf.STREAMER)
 
 	err := r.Remove(bson.M{"clientid": clientID})
 	if err != nil {

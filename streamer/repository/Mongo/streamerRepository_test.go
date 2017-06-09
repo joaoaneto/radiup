@@ -36,7 +36,7 @@ func TestRemoveOAuthInfo(t *testing.T) {
 
 func TestSearchOAuthInfo(t *testing.T) {
 	i := NewPersistorOAuthInfo()
-	oAuthInfos, err := i.Search("testauth")
+	_, err := i.Search("testauth")
 
 	if err != nil {
 		t.Errorf("Search (OAuthInfo) fail.")
