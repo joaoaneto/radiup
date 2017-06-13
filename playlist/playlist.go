@@ -7,6 +7,6 @@ import (
 type Playlist struct {
 	PlaylistID int
 	Musics []cycle.Music
-	Cycle cycle.Cycle
-//	PlaylistRPC PlaylistRPC
+	Cycles cycle.Cycle
+//	PlaylistRPC PlaylistRPC		??????
 }
