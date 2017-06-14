@@ -12,7 +12,7 @@ type ContentSuggestionManager interface {
 }
 
 type CycleManager interface {
-	Create(c cycle.Cycle)
+	Create(c cycle.Cycle) error
 	Update(registeredID int, start time.Time, end time.Time, cycleType string,
 		description string, voluntarySuggestion cycle.VoluntarySuggestion,
 		streamerSuggestion cycle.StreamerSuggestion,

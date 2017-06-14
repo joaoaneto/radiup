@@ -1,14 +1,14 @@
 package mongo
 
-import(
+import (
 	"fmt"
-	"time"
 	"log"
+	"time"
 	//"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
-	"github.com/joaoaneto/radiup/dbconf"
 	"github.com/joaoaneto/radiup/cycle"
 	cycleRep "github.com/joaoaneto/radiup/cycle/repository"
+	"github.com/joaoaneto/radiup/dbconf"
+	"gopkg.in/mgo.v2/bson"
 )
 
 /*Implementation of Cycle's repository interfaces*/
@@ -23,8 +23,6 @@ func NewPersistorContentSuggestion() cycleRep.ContentSuggestionManager {
 }
 
 func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
-	
-	//defer session.Close()
 
 	c := p.db.GetCollection(dbconf.CYCLE)
 
@@ -40,8 +38,6 @@ func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
 
 func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.ContentSuggestion, error) {
 
-	//defer session.Close()
-
 	c := p.db.GetCollection(dbconf.CYCLE)
 
 	result := []cycle.ContentSuggestion{}
@@ -56,28 +52,6 @@ func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.Conten
 
 }
 
-/*func (cs contentSuggestion) RemoveCSuggestion(nameUser string) {
-
-	session, err := mgo.Dial("localhost")
-
-	if err != nil {
-		panic(err)
-	}
-
-	defer session.Close()
-
-	c := session.DB("teste").C("Cycle")
-
-	result := contentSuggestion{}
-
-	err = c.Remove(bson.M{"name" : nameUser})
-
-	if err != nil {
-      log.Fatal(err)
-    }
-
-}*/
-
 /*Cycle Mongo implementations*/
 
 type CyclePersistor struct {
@@ -89,64 +63,64 @@ func NewPersistorCycle() cycleRep.CycleManager {
 }
 
 func (cp CyclePersistor) Create(c cycle.Cycle) error {
-	
-    //defer session.Close()
 
-    coll := cp.db.GetCollection(dbconf.CYCLE)
-   
-    err := coll.Insert(&c)
+	//defer session.Close()
 
-    if err != nil {
-    	log.Fatal(err)
-    }
+	coll := cp.db.GetCollection(dbconf.CYCLE)
+
+	err := coll.Insert(&c)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return err
 
 }
 
 func (cp CyclePersistor) Update(registeredID int, start time.Time,
-														   end time.Time,
-														   cycleType string,
-														   description string,
-														   voluntarySuggestion cycle.VoluntarySuggestion,
-														   streamerSuggestion cycle.StreamerSuggestion,
-														   contentSuggestion cycle.ContentSuggestion) error {
-	
-    //defer session.Close()
+	end time.Time,
+	cycleType string,
+	description string,
+	voluntarySuggestion cycle.VoluntarySuggestion,
+	streamerSuggestion cycle.StreamerSuggestion,
+	contentSuggestion cycle.ContentSuggestion) error {
 
-    c := cp.db.GetCollection(dbconf.CYCLE)
-    
-    wantedCycle := bson.M{"id" : registeredID}
+	//defer session.Close()
 
-    changes := bson.M{"$set" : bson.M{"start" : start,
-									  "end" : end,
-									  "cycleType" : cycleType,
-									  "description" : description,
-									  "voluntarySuggestion" : voluntarySuggestion,
-									  "streamerSuggestion" : streamerSuggestion,
-								  	  "contentSuggestion" : contentSuggestion}}
+	c := cp.db.GetCollection(dbconf.CYCLE)
+
+	wantedCycle := bson.M{"id": registeredID}
+
+	changes := bson.M{"$set": bson.M{"start": start,
+		"end":                 end,
+		"cycleType":           cycleType,
+		"description":         description,
+		"voluntarySuggestion": voluntarySuggestion,
+		"streamerSuggestion":  streamerSuggestion,
+		"contentSuggestion":   contentSuggestion}}
 
 	err := c.Update(wantedCycle, changes)
 
 	if err != nil {
-    	log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
 	return err
 
 }
 
 func (cp CyclePersistor) Remove(id int) error {
-	
+
 	//defer session.Close()
-   
-    c := cp.db.GetCollection(dbconf.CYCLE)
 
-    err := c.Remove(bson.M{"id" : id})
+	c := cp.db.GetCollection(dbconf.CYCLE)
+	time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
+	err := c.Remove(bson.M{"id": id})
 
-    if err != nil {
-    	log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return err
 
@@ -155,25 +129,24 @@ func (cp CyclePersistor) Remove(id int) error {
 func (cp CyclePersistor) Search(id int) (cycle.Cycle, error) {
 
 	result := cycle.Cycle{}
-	
+
 	//defer session.Close()
 
-    c := cp.db.GetCollection(dbconf.CYCLE)
+	c := cp.db.GetCollection(dbconf.CYCLE)
 
-    err := c.Find(bson.M{"id" : id}).One(&result)
+	err := c.Find(bson.M{"id": id}).One(&result)
 
 	if err != nil {
-    	log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
-    return result, err
+	return result, err
 }
-
 
 /*Music Mongo implementations*/
 
-type MusicPersistor struct{
-	db *dbconf DbConfig
+type MusicPersistor struct {
+	db *dbconf.DbConfig
 }
 
 func NewPersistorMusic() cycleRep.MusicManager {
@@ -181,15 +154,13 @@ func NewPersistorMusic() cycleRep.MusicManager {
 }
 
 func (mp MusicPersistor) Register(m cycle.Music) error {
-	
-	//defer session.Close()
 
 	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
 	err := c.Insert(&m)
 
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -199,16 +170,14 @@ func (mp MusicPersistor) Register(m cycle.Music) error {
 
 func (mp MusicPersistor) Remove(id string) error {
 
-	//defer session.Close()
-
 	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
-	err := c.Remove(bson.M{"id" : id})
+	err := c.Remove(bson.M{"id": id})
 
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
-	}	
+	}
 
 	return err
 
@@ -218,14 +187,12 @@ func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 
 	result := cycle.Music{}
 
-	//defer session.Close()
-
 	c := mp.db.GetCollection(dbconf.CYCLE)
 
 	/*Insert the music object on DataBase*/
-	err := c.Find(bson.M{"id" : id }).One(&result)
+	err := c.Find(bson.M{"id": id}).One(&result)
 
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -245,8 +212,6 @@ func NewPersistorVoluntarySuggestion() cycleRep.VoluntarySuggestionManager {
 
 func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) error {
 
-	//defer session.Close()
-
 	c := p.db.GetCollection(dbconf.CYCLE)
 
 	err := c.Insert(&v)
@@ -260,8 +225,6 @@ func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) erro
 }
 
 func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.VoluntarySuggestion, error) {
-
-	//defer session.Close()
 
 	c := p.db.GetCollection(dbconf.CYCLE)
 
@@ -310,63 +273,57 @@ func NewPersistorUser() cycleRep.UserManager {
 }
 
 func (up UserPersistor) Create(u cycle.User) error {
-	
-	//defer session.Close()
-    
-    fmt.Print("OLa")
-    c := up.db.GetCollection(dbconf.CYCLE)
-   	fmt.Print("Oi")
 
-    err := c.Insert(&u)
-    fmt.Print("Ei")
-    if err != nil {
-    	log.Fatal(err)
-    }
+	fmt.Print("OLa")
+	c := up.db.GetCollection(dbconf.CYCLE)
+	fmt.Print("Oi")
+
+	err := c.Insert(&u)
+	fmt.Print("Ei")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return err
 
 }
 
 func (up UserPersistor) Update(registered_user string,
-									  name string,
-									  password string,
-									  birth_day time.Time,
-									  email string,
-									  sex byte) error {
-	
-    //defer session.Close()
- 
-    c := up.db.GetCollection(dbconf.CYCLE)
-    
-    wantedUser := bson.M{"username" : registered_user}
+	name string,
+	password string,
+	birth_day time.Time,
+	email string,
+	sex byte) error {
 
-    changes := bson.M{"$set" : bson.M{"name" : name, 
-    								  "password" : password,
-							  		  "birth_day" : birth_day,
-							   		  "email" : email,
-							   		  "sex" : sex}}
+	c := up.db.GetCollection(dbconf.CYCLE)
+
+	wantedUser := bson.M{"username": registered_user}
+
+	changes := bson.M{"$set": bson.M{"name": name,
+		"password":  password,
+		"birth_day": birth_day,
+		"email":     email,
+		"sex":       sex}}
 
 	err := c.Update(wantedUser, changes)
 
 	if err != nil {
-    	log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
 	return err
 
 }
 
 func (up UserPersistor) Remove(username string) error {
-	
-	//defer session.Close()
 
-    c := up.db.GetCollection(dbconf.CYCLE)
+	c := up.db.GetCollection(dbconf.CYCLE)
 
-    err := c.Remove(bson.M{"username" : username})
+	err := c.Remove(bson.M{"username": username})
 
-    if err != nil {
-    	log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return err
 
@@ -376,15 +333,13 @@ func (up UserPersistor) Search(username string) (cycle.User, error) {
 
 	result := cycle.User{}
 
-    //defer session.Close()
+	c := up.db.GetCollection(dbconf.CYCLE)
 
-    c := up.db.GetCollection(dbconf.CYCLE)
-
-    err := c.Find(bson.M{"username" : username}).One(&result)
+	err := c.Find(bson.M{"username": username}).One(&result)
 
 	if err != nil {
-    	log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
-    return result, err
+	return result, err
 }
