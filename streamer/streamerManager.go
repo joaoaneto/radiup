@@ -1,26 +1,26 @@
-package streamer 
+package streamer
 
-import()
+type Streamer struct {
+	Name    string
+	AuthRPC AuthRPC
 
-type Streamer struct{
-	Name string
 	/*
-	contentRPC ContentRPC
-	socialRPC SocialRPC
-	authRPC AuthRPC
-	oAuthRPC OAuthRPC
-	*/
-} 
+		contentRPC ContentRPC
+		socialRPC SocialRPC
 
-type StreamerManager struct{
+		oAuthRPC OAuthRPC
+	*/
+}
+
+type StreamerManager struct {
 	Sm map[string]Streamer
 }
 
-func (streamerMan *StreamerManager) RegisterStreamer(name string, s Streamer){
+func (streamerMan *StreamerManager) RegisterStreamer(name string, s Streamer) {
 	streamerMan.Sm[name] = s
 }
 
-func (streamerMan *StreamerManager) Get(name string) Streamer{
+func (streamerMan *StreamerManager) Get(name string) Streamer {
 	return streamerMan.Sm[name]
 }
 
@@ -28,6 +28,6 @@ func (streamerMan *StreamerManager) Get(name string) Streamer{
 
 var streamerManager StreamerManager
 
-func GetStreamerManager() StreamerManager{
+func GetStreamerManager() StreamerManager {
 	return streamerManager
 }

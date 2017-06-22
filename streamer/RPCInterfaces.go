@@ -1,6 +1,8 @@
-package streamer 
+package streamer
 
-import ()
+import (
+	"net/http"
+)
 
 /*RPC interfaces */
 type ContentRPC interface {
@@ -14,7 +16,7 @@ type SocialRPC interface {
 }
 
 type AuthRPC interface {
-	NewAuthenticator()
-	SetAuthInfo()
-	NewClientAuth()
+	NewAuthenticator(redirectURI string)
+	SetAuthInfo(auth OAuthInfo)
+	NewClientAuth(w http.ResponseWriter, r *http.Request)
 }
