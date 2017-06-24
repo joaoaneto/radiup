@@ -14,6 +14,12 @@ type AuthenticatorSpotify struct {
 	State         string
 }
 
+func NewAuthSpotify() *AuthenticatorSpotify {
+	authSpotify := &AuthenticatorSpotify{State: "abc123"}
+	authSpotify.Ch = make(chan *spotify.Client)
+	return authSpotify
+}
+
 // NewAuthenticator ...
 func (a *AuthenticatorSpotify) NewAuthenticator(
 	redirectURI string) {
@@ -35,7 +41,14 @@ func (a *AuthenticatorSpotify) NewClientAuth(w http.ResponseWriter, r *http.Requ
 
 	tok, _ := a.Authenticator.Token(a.State, r)
 	client := a.Authenticator.NewClient(tok)
-
 	a.Ch <- &client
 
+}
+
+func (a *AuthenticatorSpotify) GetAuthURL() string {
+	return a.Authenticator.AuthURL(a.State)
+}
+
+func (a *AuthenticatorSpotify) GetChannel() chan *spotify.Client {
+	return a.Ch
 }

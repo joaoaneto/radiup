@@ -1,6 +1,7 @@
 package streamer
 
 import (
+	"github.com/zmb3/spotify"
 	"net/http"
 )
 
@@ -19,4 +20,6 @@ type AuthRPC interface {
 	NewAuthenticator(redirectURI string)
 	SetAuthInfo(auth OAuthInfo)
 	NewClientAuth(w http.ResponseWriter, r *http.Request)
+	GetAuthURL() string
+	GetChannel() chan *spotify.Client
 }
