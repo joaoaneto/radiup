@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/streamer/spotify"
-	"net/http"
 )
 
 func main() {
@@ -39,6 +40,7 @@ func main() {
 	// Getting client informations
 	tkn, _ := client.Token()
 	user, _ := client.CurrentUser()
+	music, _ := spotifyStreamer.SocialRPC.GetInstant(client)
 
 	// This informations should be persist in User AuthInfo
 	fmt.Println("User Token:", tkn.AccessToken)
@@ -46,4 +48,13 @@ func main() {
 	fmt.Println("Token Type:", tkn.TokenType)
 	fmt.Println("Expiry Time:", tkn.Expiry)
 
+	// Info about User
+	fmt.Println("User Name:", user.DisplayName)
+	fmt.Println("User ID:", user.ID)
+	fmt.Println("User Birthdate:", user.Birthdate)
+
+	// Info about Music
+	fmt.Println("Music Name:", music.Name)
+	fmt.Println("Music Artists:", music.Artist)
+	fmt.Println("Music ID:", music.ID)
 }

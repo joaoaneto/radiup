@@ -25,7 +25,16 @@ func (a *AuthenticatorSpotify) NewAuthenticator(
 	redirectURI string) {
 
 	a.Authenticator = spotify.NewAuthenticator(redirectURI,
-		spotify.ScopeUserReadCurrentlyPlaying)
+		spotify.ScopeUserReadCurrentlyPlaying,
+		spotify.ScopePlaylistReadCollaborative,
+		spotify.ScopePlaylistReadPrivate,
+		spotify.ScopeUserFollowRead,
+		spotify.ScopeUserLibraryRead,
+		spotify.ScopeUserReadBirthdate,
+		spotify.ScopeUserReadEmail,
+		spotify.ScopeUserReadPlaybackState,
+		spotify.ScopeUserReadPrivate,
+		spotify.ScopeUserReadRecentlyPlayed)
 
 }
 

@@ -1,8 +1,10 @@
 package streamer
 
 import (
-	"github.com/zmb3/spotify"
 	"net/http"
+
+	"github.com/joaoaneto/radiup/cycle"
+	"github.com/zmb3/spotify"
 )
 
 /*RPC interfaces */
@@ -12,8 +14,8 @@ type ContentRPC interface {
 }
 
 type SocialRPC interface {
-	GetFollowers()
-	GetInstant()
+	//GetFollowers()
+	GetInstant(client *spotify.Client) (cycle.Music, error)
 }
 
 type AuthRPC interface {

@@ -1,12 +1,13 @@
 package streamer
 
 type Streamer struct {
-	Name    string
-	AuthRPC AuthRPC
+	Name      string
+	AuthRPC   AuthRPC
+	SocialRPC SocialRPC
 
 	/*
 		contentRPC ContentRPC
-		socialRPC SocialRPC
+
 
 		oAuthRPC OAuthRPC
 	*/
