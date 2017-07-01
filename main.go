@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/joaoaneto/radiup/controller"
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/streamer/spotify"
 )
@@ -18,10 +19,10 @@ func main() {
 	spotifyStreamer := streamer.GetStreamerManager().Get("SPOTIFY")
 
 	/*Especified de url of the service*/
+
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
-	/*http.HandleFunc("/radiup", func(w http.ResponseWriter, r *http.Request){
-		fmt.Fprintf(w, "Testando")
-	})*/
+	http.HandleFunc("/", controller.LoginHandler)
+	http.HandleFunc("/register", controller.RegisterHandler)
 
 	go http.ListenAndServe(":8080", nil)
 
@@ -39,6 +40,7 @@ func main() {
 
 	// Getting client informations
 	tkn, _ := client.Token()
+
 	user, _ := client.CurrentUser()
 	music, _ := spotifyStreamer.SocialRPC.GetInstant(client)
 
