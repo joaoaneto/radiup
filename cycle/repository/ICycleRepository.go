@@ -9,6 +9,7 @@ import (
 type ContentSuggestionManager interface {
 	Register(cs cycle.ContentSuggestion) error
 	Search(nameUser interface{}) ([]cycle.ContentSuggestion, error)
+	SearchAll() ([]cycle.ContentSuggestion, error)
 }
 
 type CycleManager interface {

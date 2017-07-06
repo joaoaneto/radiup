@@ -25,6 +25,8 @@ func main() {
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
 	http.HandleFunc("/", controller.LoginHandler)
 	http.HandleFunc("/register", controller.RegisterHandler)
+	http.HandleFunc("/content/list", controller.ShowContentSuggestionsHandler)
+	http.HandleFunc("/content/register", controller.RegisterContentSuggestionsHandler)
 
 	go http.ListenAndServe(":8080", nil)
 

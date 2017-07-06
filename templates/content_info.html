@@ -1,0 +1,10 @@
+{{ define "register" }}
+{{ range $index, $element := . }}
+   <li><strong>{{ $index }}</strong>: Título: {{ $element.Title }} - User: {{ $element.ContentSuggestionUser.Name}}</li>
+{{ end }}
+<div class="row">
+    <a href="/content/register">
+	    <button type="button" class="btn btn-primary">Cadastrar Sugestão</button>
+    </a>
+</div>
+{{ end }}

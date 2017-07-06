@@ -52,6 +52,23 @@ func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.Conten
 
 }
 
+func (p ContentSuggestionPersistor) SearchAll() ([]cycle.ContentSuggestion, error) {
+
+	c := p.db.GetCollection(dbconf.CYCLE)
+
+	result := []cycle.ContentSuggestion{}
+
+	iter := c.Find(nil).Iter()
+	err := iter.All(&result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, err
+
+}
+
 /*Cycle Mongo implementations*/
 
 type CyclePersistor struct {
