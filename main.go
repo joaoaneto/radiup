@@ -18,18 +18,18 @@ func main() {
 
 	spotifyStreamer := streamer.GetStreamerManager().Get("SPOTIFY")
 
-	/*Especified de url of the service*/
-
+	spotifyStreamer.AuthRPC.NewAuthenticator("http://localhost:8080/callback")
+	oAuthTest := streamer.OAuthInfo{ClientID: "42d13a4cacae480189b2702e48d6879a", SecretKey: "f0864a30cca443c4b33b940940285d87"}
+	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)
+	
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
 	http.HandleFunc("/", controller.LoginHandler)
 	http.HandleFunc("/register", controller.RegisterHandler)
 
 	go http.ListenAndServe(":8080", nil)
 
-	spotifyStreamer.AuthRPC.NewAuthenticator("http://localhost:8080/callback")
+	//RunServer()
 
-	oAuthTest := streamer.OAuthInfo{ClientID: "42d13a4cacae480189b2702e48d6879a", SecretKey: "f0864a30cca443c4b33b940940285d87"}
-	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)
 	url := spotifyStreamer.AuthRPC.GetAuthURL()
 
 	fmt.Println("Please, use this url for auth:")
