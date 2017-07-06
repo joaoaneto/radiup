@@ -61,4 +61,16 @@ func main() {
 	fmt.Println("Music Name:", music.Name)
 	fmt.Println("Music Artists:", music.Artist)
 	fmt.Println("Music ID:", music.ID)
+
+	//Info about playlist
+	//playlist, _ := spotifyStreamer.ContentRPC.GetPlaylistData(client)
+	//fmt.Println(playlist)
+
+	//Search test
+	search, _ := spotifyStreamer.ContentRPC.GetMusicData(client,"Show das poderosas")
+
+	for _, i := range search.Tracks.Tracks {
+		fmt.Println(i.SimpleTrack)
+	}
+
 }

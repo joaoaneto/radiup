@@ -4,10 +4,8 @@ type Streamer struct {
 	Name      string
 	AuthRPC   AuthRPC
 	SocialRPC SocialRPC
-
+	ContentRPC ContentRPC
 	/*
-		contentRPC ContentRPC
-
 
 		oAuthRPC OAuthRPC
 	*/

@@ -10,7 +10,8 @@ const kStreamerSpotify string = "SPOTIFY"
 func newStreamerSpotify() streamer.Streamer {
 	authSpotify := NewAuthSpotify()
 	socialSpotify := NewSocialSpotify()
-	spotifyStreamer := streamer.Streamer{Name: kStreamerSpotify, AuthRPC: authSpotify, SocialRPC: socialSpotify}
+	contentSpotify := NewContentSpotify()
+	spotifyStreamer := streamer.Streamer{Name: kStreamerSpotify, AuthRPC: authSpotify, SocialRPC: socialSpotify, ContentRPC: contentSpotify}
 	return spotifyStreamer
 }
 
