@@ -21,7 +21,7 @@ func main() {
 	spotifyStreamer.AuthRPC.NewAuthenticator("http://localhost:8080/callback")
 	oAuthTest := streamer.OAuthInfo{ClientID: "42d13a4cacae480189b2702e48d6879a", SecretKey: "f0864a30cca443c4b33b940940285d87"}
 	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)
-	
+
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
 	http.HandleFunc("/", controller.LoginHandler)
 	http.HandleFunc("/register", controller.RegisterHandler)
@@ -44,7 +44,6 @@ func main() {
 	tkn, _ := client.Token()
 
 	user, _ := client.CurrentUser()
-	music, _ := spotifyStreamer.SocialRPC.GetInstant(client)
 
 	// This informations should be persist in User AuthInfo
 	fmt.Println("User Token:", tkn.AccessToken)
@@ -57,17 +56,31 @@ func main() {
 	fmt.Println("User ID:", user.ID)
 	fmt.Println("User Birthdate:", user.Birthdate)
 
-	// Info about Music
-	fmt.Println("Music Name:", music.Name)
-	fmt.Println("Music Artists:", music.Artist)
-	fmt.Println("Music ID:", music.ID)
+	music, musicErr := spotifyStreamer.SocialRPC.GetInstant(client)
+
+	// Info about the music the user is currently listening to
+	if musicErr == nil {
+		fmt.Println("Music Name: ", music.Name)
+		fmt.Println("Music Artists: ", music.Artist)
+		fmt.Println("Music ID: ", music.ID)
+	}
+
+	listMusic, _ := spotifyStreamer.SocialRPC.GetLastPlayedMusics(client)
+
+	// Info about the recently played songs
+	for _, music := range listMusic {
+		fmt.Println("Music Name: ", music.Name)
+		fmt.Println("Music Artists: ", music.Artist)
+		fmt.Println("Music ID: ", music.ID)
+		fmt.Println("Music Played at: ", music.PlayedAt)
+	}
 
 	//Info about playlist
 	//playlist, _ := spotifyStreamer.ContentRPC.GetPlaylistData(client)
 	//fmt.Println(playlist)
 
 	//Search test
-	search, _ := spotifyStreamer.ContentRPC.GetMusicData(client,"Show das poderosas")
+	search, _ := spotifyStreamer.ContentRPC.GetMusicData(client, "Show das poderosas")
 
 	for _, i := range search.Tracks.Tracks {
 		fmt.Println(i.SimpleTrack)

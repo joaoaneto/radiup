@@ -10,12 +10,13 @@ import (
 /*RPC interfaces */
 type ContentRPC interface {
 	GetMusicData(client *spotify.Client, musicName string) (*spotify.SearchResult, error)
-	GetPlaylistData(client *spotify.Client)  (*spotify.SimplePlaylistPage,error)
+	GetPlaylistData(client *spotify.Client) (*spotify.SimplePlaylistPage, error)
 }
 
 type SocialRPC interface {
 	//GetFollowers()
 	GetInstant(client *spotify.Client) (cycle.Music, error)
+	GetLastPlayedMusics(client *spotify.Client) ([]cycle.Music, error)
 }
 
 type AuthRPC interface {

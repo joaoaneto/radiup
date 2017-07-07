@@ -5,12 +5,15 @@ import (
 	"github.com/zmb3/spotify"
 )
 
+// SocialSpotify is a type for access to the implemented features of Spotify.
 type SocialSpotify struct{}
 
+// NewSocialSpotify is a constructor of SocialSpotify type
 func NewSocialSpotify() *SocialSpotify {
 	return &SocialSpotify{}
 }
 
+// GetInstant picks up the music the user is currently listening to.
 func (s *SocialSpotify) GetInstant(client *spotify.Client) (cycle.Music, error) {
 	current, err := client.PlayerCurrentlyPlaying()
 
@@ -32,4 +35,35 @@ func (s *SocialSpotify) GetInstant(client *spotify.Client) (cycle.Music, error) 
 		SourceID: 0,
 	}, err
 
+}
+
+// GetLastPlayedMusics picks up a list of songs that the user has heard recently.
+func (s *SocialSpotify) GetLastPlayedMusics(client *spotify.Client) ([]cycle.Music, error) {
+	list, err := client.PlayerRecentlyPlayed()
+	var musicList []cycle.Music
+
+	if list == nil {
+		return musicList, err
+	}
+
+	for _, a := range list {
+
+		var artistName []string
+		for _, b := range a.Track.Artists {
+			artistName = append(artistName, b.Name)
+		}
+
+		newMusic := cycle.Music{
+			Name:     a.Track.Name,
+			Artist:   artistName,
+			ID:       a.Track.ID.String(),
+			SourceID: 0,
+			PlayedAt: a.PlayedAt,
+		}
+
+		musicList = append(musicList, newMusic)
+
+	}
+
+	return musicList, err
 }
