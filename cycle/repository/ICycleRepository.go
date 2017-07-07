@@ -6,6 +6,11 @@ import (
 	"github.com/joaoaneto/radiup/cycle"
 )
 
+type StreamerSuggestionManager interface {
+	Register(cs cycle.StreamerSuggestion) error
+	SearchAll() ([]cycle.StreamerSuggestion, error)
+}
+
 type ContentSuggestionManager interface {
 	Register(cs cycle.ContentSuggestion) error
 	Search(nameUser interface{}) ([]cycle.ContentSuggestion, error)
@@ -38,6 +43,7 @@ type UserManager interface {
 		sex byte) error
 	Remove(username string) error
 	Search(username string) (cycle.User, error)
+	SearchAll() ([]cycle.User, error)
 }
 
 type VoluntarySuggestionManager interface {
