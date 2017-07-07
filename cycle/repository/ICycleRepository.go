@@ -43,7 +43,7 @@ type UserManager interface {
 		sex byte) error
 	Remove(username string) error
 	Search(username string) (cycle.User, error)
-	SearchAll() ([]cycle.User, error)
+	//SearchAll() ([]cycle.User, error)
 }
 
 type VoluntarySuggestionManager interface {
