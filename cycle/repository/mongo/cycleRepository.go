@@ -307,7 +307,7 @@ func (up UserPersistor) Create(u cycle.User) error {
 
 func (up UserPersistor) Update(registered_user string,
 	name string,
-	password string,
+	password []byte,
 	birth_day time.Time,
 	email string,
 	sex byte) error {

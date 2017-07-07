@@ -51,7 +51,7 @@ func RegisterContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		r.ParseForm()
-		newUser := cycle.User{Name: "José Neto", Username: "netoax", Password: "teste123",
+		newUser := cycle.User{Name: "José Neto", Username: "netoax", Password: []byte("teste123"),
 			BirthDay: time.Date(1995, time.August, 19, 0, 0, 0, 0, time.UTC), Email: "joao.alexandre@upe.br", Sex: 'M'}
 
 		newContentSuggestion := cycle.ContentSuggestion{Title: r.Form["title"][0], Description: r.Form["description"][0], ContentSuggestionUser: newUser,

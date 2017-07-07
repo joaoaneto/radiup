@@ -37,7 +37,7 @@ type UserManager interface {
 	Create(u cycle.User) error
 	Update(registered_user string,
 		name string,
-		password string,
+		password []byte,
 		birth_day time.Time,
 		email string,
 		sex byte) error
