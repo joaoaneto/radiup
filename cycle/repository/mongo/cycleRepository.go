@@ -310,7 +310,7 @@ func (up UserPersistor) Update(registered_user string,
 	password []byte,
 	birth_day time.Time,
 	email string,
-	sex byte) error {
+	sex string) error {
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 

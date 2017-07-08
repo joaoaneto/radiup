@@ -6,8 +6,10 @@ import (
 
 //for storage the user information authentication
 type AuthInfo struct {
-	ClientId  string
-	SecretKey string
+	AccessToken  string
+	RefreshToken string
+	TokenType    string
+	TokenExpiry  string
 }
 
 type User struct {
@@ -16,7 +18,7 @@ type User struct {
 	Password []byte
 	BirthDay time.Time
 	Email    string
-	Sex      byte
+	Sex      string
 }
 
 type SimpleUser struct {

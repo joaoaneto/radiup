@@ -40,7 +40,7 @@ type UserManager interface {
 		password []byte,
 		birth_day time.Time,
 		email string,
-		sex byte) error
+		sex string) error
 	Remove(username string) error
 	Search(username string) (cycle.User, error)
 	//SearchAll() ([]cycle.User, error)

@@ -26,6 +26,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Hash password: ", generateHash(password))
 		if userAuthenticate(login, password) {
 			fmt.Println("Ok")
+			http.Redirect(w, r, "/content/list", 301)
 		} else {
 			fmt.Println("Wrong")
 		}

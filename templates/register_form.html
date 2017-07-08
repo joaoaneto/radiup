@@ -6,51 +6,51 @@
 	<div class="container">
 		<div class="row justify-content-end align-items-center">
 			<div class="col-10">
-				<form>
+				<form action="/register" method="post">
 					<div class="form-group row">
 						<label for="example-text-input" class="col-sm-2 col-form-label">Nome</label>
 						<div class="col-sm-6">
-							<input class="form-control" type="Nome" placeholder="Pedro Silva" id="example-text-input">
+							<input class="form-control" name="name" type="Nome" placeholder="Pedro Silva" id="example-text-input">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-text-input" class="col-sm-2 col-form-label">Email</label>
 						<div class="col-sm-6">
-							<input class="form-control" type="Nome" placeholder="pedro@upe.br" id="example-text-input">
+							<input class="form-control" name="email" type="Nome" placeholder="pedro@upe.br" id="example-text-input">
 						</div>
 					</div>
 					<div class="form-group row">
 					  <label for="example-date-input" class="col-2 col-form-label">Date</label>
 					  <div class="col-6">
-					    <input class="form-control" type="date"  id="example-date-input">
+					    <input class="form-control" name="date" type="date"  id="example-date-input">
 					  </div>
 					</div>
 					<div class="form-group row">
 						<label for="example-text-input" class="col-sm-2 col-form-label">Username</label>
 						<div class="col-sm-6">
-							<input class="form-control" type="Nome" placeholder="pedro123" id="example-text-input">
+							<input class="form-control" name="username" type="Nome" placeholder="pedro123" id="example-text-input">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-text-input" class="col-sm-2 col-form-label">Senha</label>
 						<div class="col-sm-6">
-							<input class="form-control" type="Nome" placeholder="escolha uma senha segura" id="example-text-input">
+							<input class="form-control" name="password" type="password" placeholder="escolha uma senha segura" id="example-text-input">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="example-text-input" class="col-sm-2 col-form-label">Confirmação de Senha</label>
 						<div class="col-sm-6">
-							<input class="form-control" type="Nome" placeholder="repita sua senha colocada acima" id="example-text-input">
+							<input class="form-control" name="passwordConfirm" type="password" placeholder="repita sua senha colocada acima" id="example-text-input">
 						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-sm-3 col-form-label">Sexo</label>
 						<div class="col-sm-2">
-					        <input type="radio" class="form-check-input col-sm-2" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+					        <input type="radio" class="form-check-input col-sm-2" name="optionsRadios" id="optionsRadios1" value="M" checked>
 					        Masculino
 						</div>
 						<div class="col-sm-2">
-							<input type="radio" class="form-check-input col-sm-2" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+							<input type="radio" class="form-check-input col-sm-2" name="optionsRadios" id="optionsRadios1" value="F" checked>
 					        Feminino
 						</div>
 					</div>
@@ -64,11 +64,11 @@
 						</div>
 					</div>
 					<hr>
+					<div class="row justify-content-center">
+						<button type="submit" class="btn btn-primary">Inscrever-se</button>
+					</div>
 				</form>
 			</div>
-		</div>
-		<div class="row justify-content-center">
-		<button type="submit" class="btn btn-primary">Inscrever-se</button>
 		</div>
 	</div>
 </section>
