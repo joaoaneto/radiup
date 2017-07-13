@@ -58,13 +58,13 @@ func generateHash(password string) []byte {
 
 func userAuthenticate(login string, password string) bool {
 
-	userPersistor := mongo.NewPersistorUser()
-	user, err := userPersistor.Search(login)
+	simpleUserPersistor := mongo.NewPersistorSimpleUser()
+	simpleUser, err := simpleUserPersistor.Search(login)
 	if err != nil {
 		return false
 	}
 
-	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword(simpleUser.SimpleUser.Password, []byte(password)); err != nil {
 		return false
 	}
 

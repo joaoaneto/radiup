@@ -1,13 +1,13 @@
 package mongo
 
 import (
-	"fmt"
 	"log"
 	"time"
 	//"gopkg.in/mgo.v2"
 	"github.com/joaoaneto/radiup/cycle"
 	cycleRep "github.com/joaoaneto/radiup/cycle/repository"
 	"github.com/joaoaneto/radiup/dbconf"
+	"golang.org/x/oauth2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -281,22 +281,20 @@ func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.Voluntary
 
 /*User mongo implementations*/
 
-type UserPersistor struct {
+type SimpleUserPersistor struct {
 	db *dbconf.DbConfig
 }
 
-func NewPersistorUser() cycleRep.UserManager {
-	return &UserPersistor{dbconf.NewDbConfig()}
+func NewPersistorSimpleUser() cycleRep.SimpleUserManager {
+	return &SimpleUserPersistor{dbconf.NewDbConfig()}
 }
 
-func (up UserPersistor) Create(u cycle.User) error {
+func (up SimpleUserPersistor) Create(u cycle.SimpleUser) error {
 
-	fmt.Print("OLa")
 	c := up.db.GetCollection(dbconf.CYCLE)
-	fmt.Print("Oi")
 
 	err := c.Insert(&u)
-	fmt.Print("Ei")
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -305,22 +303,21 @@ func (up UserPersistor) Create(u cycle.User) error {
 
 }
 
-func (up UserPersistor) Update(registered_user string,
+func (up SimpleUserPersistor) Update(registered_user string,
 	name string,
 	password []byte,
-	birth_day time.Time,
+	birthDay time.Time,
 	email string,
-	sex string) error {
+	sex string,
+	authSpotify *oauth2.Token) error {
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 
 	wantedUser := bson.M{"username": registered_user}
+	user := cycle.User{name, registered_user, password, birthDay, email, sex}
 
-	changes := bson.M{"$set": bson.M{"name": name,
-		"password":  password,
-		"birth_day": birth_day,
-		"email":     email,
-		"sex":       sex}}
+	changes := bson.M{"$set": bson.M{"simple_user": user,
+		"auth_spotify": authSpotify}}
 
 	err := c.Update(wantedUser, changes)
 
@@ -332,7 +329,7 @@ func (up UserPersistor) Update(registered_user string,
 
 }
 
-func (up UserPersistor) Remove(username string) error {
+func (up SimpleUserPersistor) Remove(username string) error {
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 
@@ -346,13 +343,13 @@ func (up UserPersistor) Remove(username string) error {
 
 }
 
-func (up UserPersistor) Search(username string) (cycle.User, error) {
+func (up SimpleUserPersistor) Search(username string) (cycle.SimpleUser, error) {
 
-	result := cycle.User{}
+	result := cycle.SimpleUser{}
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 
-	err := c.Find(bson.M{"username": username}).One(&result)
+	err := c.Find(bson.M{"simpleuser.username": username}).One(&result)
 
 	if err != nil {
 		log.Fatal(err)

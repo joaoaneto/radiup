@@ -2,15 +2,9 @@ package cycle
 
 import (
 	"time"
-)
 
-//for storage the user information authentication
-type AuthInfo struct {
-	AccessToken  string
-	RefreshToken string
-	TokenType    string
-	TokenExpiry  string
-}
+	"golang.org/x/oauth2"
+)
 
 type User struct {
 	Name     string
@@ -22,10 +16,9 @@ type User struct {
 }
 
 type SimpleUser struct {
-	SimpleUser   User
-	Connectivity int
-	AuthSpotify  AuthInfo
-	AuthDeezer   AuthInfo
+	SimpleUser  User
+	AuthSpotify *oauth2.Token
+	//AuthDeezer   *oauth2.Token
 }
 
 type AdminUser struct {

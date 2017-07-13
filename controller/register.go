@@ -25,7 +25,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	fp2 := path.Join("templates", "register_form.html")
 	t, err := template.ParseFiles(fp1, fp2)
 
-	userPersistor := mongo.NewPersistorUser()
+	simpleUserPersistor := mongo.NewPersistorSimpleUser()
 
 	if r.Method == "POST" {
 		r.ParseForm()
@@ -41,10 +41,10 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(name, email, t, username, password, sexo)
 
 		user := cycle.User{name, username, password, birthDate, email, sexo}
+		simpleUser := cycle.SimpleUser{user, nil}
+		simpleUserPersistor.Create(simpleUser)
 
-		userPersistor.Create(user)
-
-		fmt.Println(user)
+		fmt.Println(simpleUser)
 
 		http.Redirect(w, r, "/login", 301)
 

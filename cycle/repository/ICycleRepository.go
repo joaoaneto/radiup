@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/joaoaneto/radiup/cycle"
+	"golang.org/x/oauth2"
 )
 
 type StreamerSuggestionManager interface {
@@ -33,16 +34,17 @@ type MusicManager interface {
 	Search(id string) (cycle.Music, error)
 }
 
-type UserManager interface {
-	Create(u cycle.User) error
+type SimpleUserManager interface {
+	Create(u cycle.SimpleUser) error
 	Update(registered_user string,
 		name string,
 		password []byte,
 		birth_day time.Time,
 		email string,
-		sex string) error
+		sex string,
+		authSpotify *oauth2.Token) error
 	Remove(username string) error
-	Search(username string) (cycle.User, error)
+	Search(username string) (cycle.SimpleUser, error)
 	//SearchAll() ([]cycle.User, error)
 }
 
