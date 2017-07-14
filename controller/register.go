@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -38,13 +37,15 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		password, _ := authConfirmPassword(r.Form["password"][0], r.Form["passwordConfirm"][0])
 		sexo := r.Form["optionsRadios"][0]
 
-		fmt.Println(name, email, t, username, password, sexo)
-
 		user := cycle.User{name, username, password, birthDate, email, sexo}
-		simpleUser := cycle.SimpleUser{user, nil}
+
+		client := <-spotifyStreamer.AuthRPC.GetChannel()
+		tkn, _ := client.Token()
+
+		simpleUser := cycle.SimpleUser{user, tkn}
 		simpleUserPersistor.Create(simpleUser)
 
-		fmt.Println(simpleUser)
+		log.Print("Usuário cadastrado: ", simpleUser)
 
 		http.Redirect(w, r, "/login", 301)
 
@@ -62,6 +63,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if err := t.Execute(w, templateUrl); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }
 
 func authConfirmPassword(pwd string, pwdConn string) ([]byte, bool) {

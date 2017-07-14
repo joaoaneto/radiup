@@ -21,9 +21,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		login := r.Form["username"][0]
 		password := r.Form["password"][0]
-		fmt.Println("Login passed: ", login)
-		fmt.Println("Passworod passed: ", password)
-		fmt.Println("Hash password: ", generateHash(password))
 		if userAuthenticate(login, password) {
 			fmt.Println("Ok")
 			http.Redirect(w, r, "/content/list", 301)

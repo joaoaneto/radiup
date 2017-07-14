@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"net/http"
 
 	"github.com/joaoaneto/radiup/controller"
@@ -18,9 +18,9 @@ func main() {
 
 	spotifyStreamer := streamer.GetStreamerManager().Get("SPOTIFY")
 
-	spotifyStreamer.AuthRPC.NewAuthenticator("http://localhost:8080/callback")
+	/*spotifyStreamer.AuthRPC.NewAuthenticator("http://localhost:8080/register")
 	oAuthTest := streamer.OAuthInfo{ClientID: "42d13a4cacae480189b2702e48d6879a", SecretKey: "f0864a30cca443c4b33b940940285d87"}
-	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)
+	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)*/
 
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
 	http.HandleFunc("/", controller.LoginHandler)
@@ -28,17 +28,17 @@ func main() {
 	http.HandleFunc("/content/list", controller.ShowContentSuggestionsHandler)
 	http.HandleFunc("/content/register", controller.RegisterContentSuggestionsHandler)
 
-	go http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)
 
 	//RunServer()
 
-	url := spotifyStreamer.AuthRPC.GetAuthURL()
+	//url := spotifyStreamer.AuthRPC.GetAuthURL()
 
-	fmt.Println("Please, use this url for auth:")
-	fmt.Println(url)
+	//fmt.Println("Please, use this url for auth:")
+	//fmt.Println(url)
 
 	// Getting client through channel
-	client := <-spotifyStreamer.AuthRPC.GetChannel()
+	/*client := <-spotifyStreamer.AuthRPC.GetChannel()
 
 	// Getting client informations
 	tkn, _ := client.Token()
@@ -84,6 +84,6 @@ func main() {
 
 	for _, i := range search.Tracks.Tracks {
 		fmt.Println(i.SimpleTrack)
-	}
+	} */
 
 }

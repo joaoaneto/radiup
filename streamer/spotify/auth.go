@@ -2,6 +2,8 @@ package spotify
 
 import (
 	"net/http"
+	//"fmt"
+	"log"
 
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/zmb3/spotify"
@@ -50,8 +52,8 @@ func (a *AuthenticatorSpotify) NewClientAuth(w http.ResponseWriter, r *http.Requ
 
 	tok, _ := a.Authenticator.Token(a.State, r)
 	client := a.Authenticator.NewClient(tok)
+	log.Print("Usuário autenticado... Prosseguir com o cadastro.")
 	a.Ch <- &client
-
 }
 
 func (a *AuthenticatorSpotify) GetAuthURL() string {
