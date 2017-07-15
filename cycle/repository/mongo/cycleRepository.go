@@ -13,6 +13,46 @@ import (
 
 /*Implementation of Cycle's repository interfaces*/
 
+//StreamerSuggestion Mongo implementations
+//StreamerSuggestionPersistor .
+type StreamerSuggestionPersistor struct {
+	db *dbconf.DbConfig
+}
+
+//NewPersistorStreamerSuggestion .
+func NewPersistorStreamerSuggestion() cycleRep.StreamerSuggestionManager {
+	return &StreamerSuggestionPersistor{dbconf.NewDbConfig()}
+}
+
+// Register Streamer Suggestion
+func (p StreamerSuggestionPersistor) Register(cs cycle.StreamerSuggestion) error {
+	c := p.db.GetCollection(dbconf.CYCLE)
+
+	err := c.Insert(&cs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return err
+}
+
+// SearchAll StreamerSuggestion
+func (p StreamerSuggestionPersistor) SearchAll() ([]cycle.StreamerSuggestion, error) {
+	c := p.db.GetCollection(dbconf.CYCLE)
+
+	result := []cycle.StreamerSuggestion{}
+
+	iter := c.Find(nil).Iter()
+	err := iter.All(&result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, err
+}
+
 /*ContentSuggestion Mongo implementations*/
 type ContentSuggestionPersistor struct {
 	db *dbconf.DbConfig
