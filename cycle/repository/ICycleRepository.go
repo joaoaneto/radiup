@@ -45,7 +45,7 @@ type SimpleUserManager interface {
 		authSpotify *oauth2.Token) error
 	Remove(username string) error
 	Search(username string) (cycle.SimpleUser, error)
-	//SearchAll() ([]cycle.User, error)
+	SearchAll() ([]cycle.SimpleUser, error)
 }
 
 type VoluntarySuggestionManager interface {

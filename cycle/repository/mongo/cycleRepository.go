@@ -397,3 +397,19 @@ func (up SimpleUserPersistor) Search(username string) (cycle.SimpleUser, error) 
 
 	return result, err
 }
+
+func (up SimpleUserPersistor) SearchAll() ([]cycle.SimpleUser, error) {
+
+	result := []cycle.SimpleUser{}
+
+	c := up.db.GetCollection(dbconf.CYCLE)
+
+	iter := c.Find(nil).Iter()
+	err := iter.All(&result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, err
+}
