@@ -161,13 +161,7 @@ func (cp CyclePersistor) Create(c cycle.Cycle) error {
 
 }
 
-func (cp CyclePersistor) Update(registeredID int, start time.Time,
-	end time.Time,
-	cycleType string,
-	description string,
-	voluntarySuggestion cycle.VoluntarySuggestion,
-	streamerSuggestion cycle.StreamerSuggestion,
-	contentSuggestion cycle.ContentSuggestion) error {
+func (cp CyclePersistor) Update(registeredID int, updatedCycle cycle.Cycle) error {
 
 	//defer session.Close()
 
@@ -175,13 +169,13 @@ func (cp CyclePersistor) Update(registeredID int, start time.Time,
 
 	wantedCycle := bson.M{"id": registeredID}
 
-	changes := bson.M{"$set": bson.M{"start": start,
-		"end":                 end,
-		"cycleType":           cycleType,
-		"description":         description,
-		"voluntarySuggestion": voluntarySuggestion,
-		"streamerSuggestion":  streamerSuggestion,
-		"contentSuggestion":   contentSuggestion}}
+	changes := bson.M{"$set": bson.M{"start": updatedCycle.Start,
+		"end":                 updatedCycle.End,
+		"cycleType":           updatedCycle.CycleType,
+		"description":         updatedCycle.Description,
+		"voluntarySuggestion": updatedCycle.CycleVoluntarySuggestion,
+		"streamerSuggestion":  updatedCycle.CycleStreamerSuggestion,
+		"contentSuggestion":   updatedCycle.CycleContentSuggestion}}
 
 	err := c.Update(wantedCycle, changes)
 

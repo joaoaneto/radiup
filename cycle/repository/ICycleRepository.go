@@ -21,10 +21,7 @@ type ContentSuggestionManager interface {
 
 type CycleManager interface {
 	Create(c cycle.Cycle) error
-	Update(registeredID int, start time.Time, end time.Time, cycleType string,
-		description string, voluntarySuggestion cycle.VoluntarySuggestion,
-		streamerSuggestion cycle.StreamerSuggestion,
-		contentSuggestion cycle.ContentSuggestion) error
+	Update(registeredID int, updatedCycle cycle.Cycle) error
 	Remove(id int) error
 	Search(id int) (cycle.Cycle, error)
 }
