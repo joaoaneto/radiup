@@ -12,5 +12,5 @@ type Cycle struct {
 	Description              string
 	CycleVoluntarySuggestion []VoluntarySuggestion
 	CycleStreamerSuggestion  StreamerSuggestion
-	CycleContentSuggestion   ContentSuggestion
+	CycleContentSuggestion   []ContentSuggestion
 }

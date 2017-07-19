@@ -25,7 +25,7 @@ func ShowContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	result, _ := contentPersistor.SearchAll()
+	result, _ := contentPersistor.SearchAll(0)
 
 	// send any data for template render through second argument in t.Execute()
 	if err := t.Execute(w, result); err != nil {

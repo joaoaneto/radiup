@@ -81,18 +81,25 @@ func (p StreamerSuggestionPersistor) Update(lastModificationDate time.Time, list
 
 /*ContentSuggestion Mongo implementations*/
 type ContentSuggestionPersistor struct {
-	db *dbconf.DbConfig
+	//db *dbconf.DbConfig
 }
 
 func NewPersistorContentSuggestion() cycleRep.ContentSuggestionManager {
-	return &ContentSuggestionPersistor{dbconf.NewDbConfig()}
+	return &ContentSuggestionPersistor{/*dbconf.NewDbConfig()*/}
 }
 
-func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
+func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion, cycleID int) error {
 
-	c := p.db.GetCollection(dbconf.CYCLE)
+	//c := p.db.GetCollection(dbconf.CYCLE)
+	c := NewPersistorCycle()
 
-	err := c.Insert(&cs)
+	cy, err:= c.Search(cycleID)
+
+	cy.CycleContentSuggestion = append(cy.CycleContentSuggestion, cs)
+	
+	c.Update(cycleID, cy)
+
+	//err := c.Insert(&cs)
 
 	if err != nil {
 		log.Fatal(err)
@@ -102,6 +109,7 @@ func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion) error {
 
 }
 
+/*
 func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.ContentSuggestion, error) {
 
 	c := p.db.GetCollection(dbconf.CYCLE)
@@ -117,15 +125,21 @@ func (p ContentSuggestionPersistor) Search(nameUser interface{}) ([]cycle.Conten
 	return result, err
 
 }
+*/
 
-func (p ContentSuggestionPersistor) SearchAll() ([]cycle.ContentSuggestion, error) {
+func (p ContentSuggestionPersistor) SearchAll(cycleID int) ([]cycle.ContentSuggestion, error) {
 
-	c := p.db.GetCollection(dbconf.CYCLE)
+	//c := p.db.GetCollection(dbconf.CYCLE)
 
-	result := []cycle.ContentSuggestion{}
+	c := NewPersistorCycle()
 
-	iter := c.Find(nil).Iter()
-	err := iter.All(&result)
+	cy, err := c.Search(cycleID)
+
+	//result := []cycle.ContentSuggestion{}
+
+	result := cy.CycleContentSuggestion
+	//iter := c.Find(nil).Iter()
+	//err := iter.All(&result)
 
 	if err != nil {
 		return nil, err
@@ -167,7 +181,7 @@ func (cp CyclePersistor) Update(registeredID int, updatedCycle cycle.Cycle) erro
 
 	c := cp.db.GetCollection(dbconf.CYCLE)
 
-	wantedCycle := bson.M{"id": registeredID}
+	wantedCycle := bson.M{"id": updatedCycle.ID}
 
 	changes := bson.M{"$set": bson.M{"start": updatedCycle.Start,
 		"end":                 updatedCycle.End,
