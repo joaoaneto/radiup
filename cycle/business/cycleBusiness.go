@@ -83,3 +83,58 @@ func (dealer *StreamerSuggestionDealer) GetUpdatedMusicList(auth spotify.Authent
 
 	return sugg, err
 }
+
+func CreateCycle (id int , startTime time.Time, endTime time.Time, cycleType string,
+				  description string) {
+
+	
+	cycle := &cycle.Cycle{
+		ID: id, 
+		Start: startTime,
+		End: endTime,
+		CycleType: cycleType,
+		Description: description}
+	
+    /*Call cycle persistor*/
+	cyclePersistor := mongo.NewCyclePersistor()
+
+	/*Saving cycle*/
+	cyclePersistor.Create(cycle)
+}
+
+type Dispatcher struct {
+	listeners []CycleListener 
+}
+
+func (d* Dispatcher) AddListener(cl CycleListener) {
+	d.listeners = append(d.listeners, cl)
+}
+
+func (d* Dispatcher) NotifyAll() {
+	for _, m := range d.listeners {
+		m.WhenNotify()
+	}
+}
+
+type CycleManager struct {
+	Dis Dispatcher
+}
+
+func (cm* CycleManager) NewListener(cl CycleListener) {
+	cm.Dis.AddListener(cl)
+}
+
+func (cm* CycleManager) Notify(){
+	cm.Dis.NotifyAll()
+}
+
+func (cm* CycleManager)ManageCycle(c* cycle.Cycle) {
+	
+	for {
+		now := time.Now()
+		if now.Equal(c.End) || now.After(c.End) {
+			cm.Notify()
+			break
+		}
+	}
+}
