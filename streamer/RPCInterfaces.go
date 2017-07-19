@@ -22,6 +22,7 @@ type SocialRPC interface {
 type AuthRPC interface {
 	NewAuthenticator(redirectURI string)
 	SetAuthInfo(auth OAuthInfo)
+	GetAuthenticator() spotify.Authenticator
 	NewClientAuth(w http.ResponseWriter, r *http.Request)
 	GetAuthURL() string
 	GetChannel() chan *spotify.Client

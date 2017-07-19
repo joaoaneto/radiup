@@ -47,6 +47,12 @@ func (a *AuthenticatorSpotify) SetAuthInfo(auth streamer.OAuthInfo) {
 
 }
 
+func (a *AuthenticatorSpotify) GetAuthenticator() spotify.Authenticator {
+
+	return a.Authenticator
+
+}
+
 // NewClientAuth ...
 func (a *AuthenticatorSpotify) NewClientAuth(w http.ResponseWriter, r *http.Request) {
 

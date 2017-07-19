@@ -1,9 +1,11 @@
 package mongo
 
 import (
+	"fmt"
 	"log"
 	"time"
 	//"gopkg.in/mgo.v2"
+
 	"github.com/joaoaneto/radiup/cycle"
 	cycleRep "github.com/joaoaneto/radiup/cycle/repository"
 	"github.com/joaoaneto/radiup/dbconf"
@@ -38,19 +40,43 @@ func (p StreamerSuggestionPersistor) Register(cs cycle.StreamerSuggestion) error
 }
 
 // SearchAll StreamerSuggestion
-func (p StreamerSuggestionPersistor) SearchAll() ([]cycle.StreamerSuggestion, error) {
+func (p StreamerSuggestionPersistor) SearchAll() (cycle.StreamerSuggestion, error) {
 	c := p.db.GetCollection(dbconf.CYCLE)
 
 	result := []cycle.StreamerSuggestion{}
 
 	iter := c.Find(nil).Iter()
 	err := iter.All(&result)
+	fmt.Println(len(result))
 
-	if err != nil {
-		return nil, err
+	var actual cycle.StreamerSuggestion
+
+	for _, r := range result {
+		if len(r.Musics) != 0 {
+			actual = r
+			break
+		}
 	}
 
-	return result, err
+	return actual, err
+}
+
+// Update StreamerSuggestion
+func (p StreamerSuggestionPersistor) Update(lastModificationDate time.Time, listMusic []cycle.Music) error {
+
+	c := p.db.GetCollection(dbconf.CYCLE)
+
+	wantedSuggestion := bson.M{"modificationdate": lastModificationDate}
+	changes := bson.M{"$set": bson.M{"modificationdate": time.Now(), "musics": listMusic}}
+
+	err := c.Update(wantedSuggestion, changes)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return err
+
 }
 
 /*ContentSuggestion Mongo implementations*/

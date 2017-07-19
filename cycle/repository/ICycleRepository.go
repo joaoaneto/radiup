@@ -9,7 +9,8 @@ import (
 
 type StreamerSuggestionManager interface {
 	Register(cs cycle.StreamerSuggestion) error
-	SearchAll() ([]cycle.StreamerSuggestion, error)
+	Update(lastModificationDate time.Time, listMusic []cycle.Music) error
+	SearchAll() (cycle.StreamerSuggestion, error)
 }
 
 type ContentSuggestionManager interface {
