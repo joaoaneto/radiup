@@ -88,7 +88,7 @@ func NewPersistorContentSuggestion() cycleRep.ContentSuggestionManager {
 	return &ContentSuggestionPersistor{/*dbconf.NewDbConfig()*/}
 }
 
-func (p ContentSuggestionPersistor) Register(cs cycle.ContentSuggestion, cycleID int) error {
+func (p ContentSuggestionPersistor) Register(cycleID int, cs cycle.ContentSuggestion) error {
 
 	//c := p.db.GetCollection(dbconf.CYCLE)
 	c := NewPersistorCycle()
@@ -185,11 +185,11 @@ func (cp CyclePersistor) Update(registeredID int, updatedCycle cycle.Cycle) erro
 
 	changes := bson.M{"$set": bson.M{"start": updatedCycle.Start,
 		"end":                 updatedCycle.End,
-		"cycleType":           updatedCycle.CycleType,
+		"cycletype":           updatedCycle.CycleType,
 		"description":         updatedCycle.Description,
-		"voluntarySuggestion": updatedCycle.CycleVoluntarySuggestion,
-		"streamerSuggestion":  updatedCycle.CycleStreamerSuggestion,
-		"contentSuggestion":   updatedCycle.CycleContentSuggestion}}
+		"cyclevoluntarysuggestion": updatedCycle.CycleVoluntarySuggestion,
+		"cyclestreamersuggestion":  updatedCycle.CycleStreamerSuggestion,
+		"cyclecontentsuggestion":   updatedCycle.CycleContentSuggestion}}
 
 	err := c.Update(wantedCycle, changes)
 

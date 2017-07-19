@@ -5,7 +5,7 @@ import (
 )
 
 type VoluntarySuggestion struct {
-	//track Music
+	track 						 Music
 	VoluntarySuggestionUser      User
 	Votes     					 int
 	Timestamp 					 time.Time
