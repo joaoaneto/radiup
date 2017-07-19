@@ -9,9 +9,12 @@ import (
 
 	"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/radiup/cycle/repository/mongo"
+	"github.com/joaoaneto/radiup/server"
 )
 
 func ShowContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("teasda")
 
 	contentPersistor := mongo.NewPersistorContentSuggestion()
 	fp1 := path.Join("templates", "base.html")
@@ -32,15 +35,27 @@ func ShowContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 
 func RegisterContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 
-	//contentPersistor := mongo.NewPersistorContentSuggestion()
-	fp1 := path.Join("templates", "base.html")
-	fp2 := path.Join("templates", "content_register.html")
-
 	contentPersistor := mongo.NewPersistorContentSuggestion()
 
-	fmt.Println("method:", r.Method)
+	redirect := "/login"
 
 	if r.Method == "GET" {
+
+		sessionStore := server.GetSessionStore()
+		session, _ := sessionStore.Store.Get(r, "cookie-name")
+
+		auth, ok := session.Values["authenticated"].(bool)
+
+		//verify if user is not authenticated, so redirect to login page
+		if !ok || !auth {
+			http.Redirect(w, r, redirect, 301)
+			return
+		}
+
+		//contentPersistor := mongo.NewPersistorContentSuggestion()
+		fp1 := path.Join("templates", "base.html")
+		fp2 := path.Join("templates", "content_register.html")
+
 		t, err := template.ParseFiles(fp1, fp2)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,7 +64,10 @@ func RegisterContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 		if err := t.Execute(w, nil); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-	} else {
+	}
+
+	if r.Method == "POST" {
+
 		r.ParseForm()
 
 		//here... the idea is get the current user authenticated

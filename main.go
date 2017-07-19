@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	"net/http"
 
-	"github.com/joaoaneto/radiup/controller"
+	"github.com/joaoaneto/radiup/cycle/controller"
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/streamer/spotify"
 )
@@ -23,10 +23,11 @@ func main() {
 	spotifyStreamer.AuthRPC.SetAuthInfo(oAuthTest)*/
 
 	http.HandleFunc("/callback", spotifyStreamer.AuthRPC.NewClientAuth)
-	http.HandleFunc("/", controller.LoginHandler)
+	http.HandleFunc("/login", controller.LoginHandler)
 	http.HandleFunc("/register", controller.RegisterHandler)
 	http.HandleFunc("/content/list", controller.ShowContentSuggestionsHandler)
 	http.HandleFunc("/content/register", controller.RegisterContentSuggestionsHandler)
+	http.HandleFunc("/logout", controller.LogoutHandler)
 
 	http.ListenAndServe(":8080", nil)
 
