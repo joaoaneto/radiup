@@ -47,6 +47,6 @@ type SimpleUserManager interface {
 }
 
 type VoluntarySuggestionManager interface {
-	Register(v cycle.VoluntarySuggestion) error
-	Search(nameUser string) ([]cycle.VoluntarySuggestion, error)
+	Register(cycleID int, vs cycle.VoluntarySuggestion) error
+	SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error)
 }

@@ -280,38 +280,46 @@ func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 /*VoluntarySuggestion Mongo implementations*/
 
 type VoluntarySuggestionPersistor struct {
-	db *dbconf.DbConfig
+	//db *dbconf.DbConfig
 }
 
 func NewPersistorVoluntarySuggestion() cycleRep.VoluntarySuggestionManager {
-	return &VoluntarySuggestionPersistor{dbconf.NewDbConfig()}
+	return &VoluntarySuggestionPersistor{/*dbconf.NewDbConfig()*/}
 }
 
-func (p VoluntarySuggestionPersistor) Register(v cycle.VoluntarySuggestion) error {
+func (p VoluntarySuggestionPersistor) Register(cycleID int, vs cycle.VoluntarySuggestion) error {
 
-	c := p.db.GetCollection(dbconf.CYCLE)
+	//c := p.db.GetCollection(dbconf.CYCLE)
+	//err := c.Insert(&v)
+	cp := NewPersistorCycle()
+	c, err := cp.Search(cycleID)
 
-	err := c.Insert(&v)
+	c.CycleVoluntarySuggestion = append(c.CycleVoluntarySuggestion, vs)
+	cp.Update(cycleID, c)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	
 	return err
-
 }
 
-func (p VoluntarySuggestionPersistor) Search(nameUser string) ([]cycle.VoluntarySuggestion, error) {
+func (p VoluntarySuggestionPersistor) SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error) {
 
-	c := p.db.GetCollection(dbconf.CYCLE)
+	//c := p.db.GetCollection(dbconf.CYCLE)
 
-	result := []cycle.VoluntarySuggestion{}
+	//result := []cycle.VoluntarySuggestion{}
 
-	err := c.Find(bson.M{"name": nameUser}).One(&result)
+	//err := c.Find(bson.M{"name": nameUser}).One(&result)
+	cp := NewPersistorCycle()
+	c, err := cp.Search(cycleID)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	result := c.CycleVoluntarySuggestion
 
 	return result, err
 

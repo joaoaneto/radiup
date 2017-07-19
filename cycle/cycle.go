@@ -10,7 +10,7 @@ type Cycle struct {
 	End                      time.Time
 	CycleType                string
 	Description              string
-	CycleVoluntarySuggestion VoluntarySuggestion
+	CycleVoluntarySuggestion []VoluntarySuggestion
 	CycleStreamerSuggestion  StreamerSuggestion
 	CycleContentSuggestion   ContentSuggestion
 }
