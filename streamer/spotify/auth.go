@@ -6,7 +6,8 @@ import (
 	"log"
 
 	"github.com/joaoaneto/radiup/streamer"
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
+	//"golang.org/x/oauth2"
 )
 
 // AuthenticatorSpotify ...
@@ -40,16 +41,14 @@ func (a *AuthenticatorSpotify) NewAuthenticator(
 
 }
 
+func (a *AuthenticatorSpotify) GetAuthenticator() spotify.Authenticator {
+	return a.Authenticator
+}
+
 // SetAuthInfo ...
 func (a *AuthenticatorSpotify) SetAuthInfo(auth streamer.OAuthInfo) {
 
 	a.Authenticator.SetAuthInfo(auth.ClientID, auth.SecretKey)
-
-}
-
-func (a *AuthenticatorSpotify) GetAuthenticator() spotify.Authenticator {
-
-	return a.Authenticator
 
 }
 

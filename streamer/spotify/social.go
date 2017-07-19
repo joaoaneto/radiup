@@ -2,7 +2,7 @@ package spotify
 
 import (
 	"github.com/joaoaneto/radiup/cycle"
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
 )
 
 // SocialSpotify is a type for access to the implemented features of Spotify.

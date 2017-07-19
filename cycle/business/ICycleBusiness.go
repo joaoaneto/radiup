@@ -2,7 +2,7 @@ package business
 
 import (
 	"github.com/joaoaneto/radiup/cycle"
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
 )
 
 type StreamerSuggestionOperator interface {

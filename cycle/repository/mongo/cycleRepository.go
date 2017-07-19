@@ -395,11 +395,10 @@ func (up SimpleUserPersistor) Update(registered_user string,
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 
-	wantedUser := bson.M{"username": registered_user}
+	wantedUser := bson.M{"simpleuser.username": registered_user}
 	user := cycle.User{name, registered_user, password, birthDay, email, sex}
-
-	changes := bson.M{"$set": bson.M{"simple_user": user,
-		"auth_spotify": authSpotify}}
+	changes := bson.M{"$set": bson.M{"simpleuser": user,
+		"authspotify": authSpotify}}
 
 	err := c.Update(wantedUser, changes)
 

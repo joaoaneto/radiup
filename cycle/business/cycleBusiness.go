@@ -5,10 +5,11 @@ import (
 
 	"time"
 
+	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/radiup/cycle/repository/mongo"
 	streamerSpotify "github.com/joaoaneto/radiup/streamer/spotify"
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
 )
 
 type StreamerSuggestionDealer struct{}
@@ -30,6 +31,7 @@ func (dealer *StreamerSuggestionDealer) GetUpdatedMusicList(auth spotify.Authent
 	userList, err := userPersistor.SearchAll()
 
 	for _, a := range userList {
+		CheckTokenExpiry(a)
 		client := auth.NewClient(a.AuthSpotify)
 		socialSpotify := streamerSpotify.NewSocialSpotify()
 		musics, err := socialSpotify.GetLastPlayedMusics(&client)
@@ -88,7 +90,7 @@ func CreateCycle (id int , startTime time.Time, endTime time.Time, cycleType str
 				  description string) {
 
 	
-	cycle := &cycle.Cycle{
+	cycle := cycle.Cycle{
 		ID: id, 
 		Start: startTime,
 		End: endTime,
@@ -96,7 +98,7 @@ func CreateCycle (id int , startTime time.Time, endTime time.Time, cycleType str
 		Description: description}
 	
     /*Call cycle persistor*/
-	cyclePersistor := mongo.NewCyclePersistor()
+	cyclePersistor := mongo.NewPersistorCycle()
 
 	/*Saving cycle*/
 	cyclePersistor.Create(cycle)
@@ -112,7 +114,7 @@ func (d* Dispatcher) AddListener(cl CycleListener) {
 
 func (d* Dispatcher) NotifyAll() {
 	for _, m := range d.listeners {
-		m.WhenNotify()
+		m.Notified()
 	}
 }
 
@@ -137,4 +139,18 @@ func (cm* CycleManager)ManageCycle(c* cycle.Cycle) {
 			break
 		}
 	}
+}
+
+func CheckTokenExpiry(user cycle.SimpleUser) {
+
+	spotifyStreamer := streamer.GetStreamerManager().Get("SPOTIFY")
+	expiry := user.AuthSpotify.Expiry
+	duration := time.Duration.Seconds(time.Since(expiry))
+	
+	if duration > 3600 {
+		ntkn, _ := spotifyStreamer.AuthRPC.GetAuthenticator().RefreshToken(user.AuthSpotify.RefreshToken)
+		userPersistor := mongo.NewPersistorSimpleUser()
+		userPersistor.Update(user.SimpleUser.Username, user.SimpleUser.Name, user.SimpleUser.Password, user.SimpleUser.BirthDay, user.SimpleUser.Email, user.SimpleUser.Sex, ntkn)
+	}
+
 }

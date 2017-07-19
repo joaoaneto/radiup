@@ -1,7 +1,7 @@
 package spotify
 
 import(
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
 )
 
 type ContentSpotify struct {

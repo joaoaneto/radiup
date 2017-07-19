@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/joaoaneto/radiup/cycle"
-	"github.com/zmb3/spotify"
+	"github.com/joaoaneto/spotify"
+	//"golang.org/x/oauth2"
 )
 
 /*RPC interfaces */
