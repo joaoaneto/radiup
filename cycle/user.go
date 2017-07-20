@@ -22,5 +22,6 @@ type SimpleUser struct {
 }
 
 type AdminUser struct {
-	AdminUser User
+	AdminUser   User
+	AuthSpotify *oauth2.Token
 }

@@ -452,3 +452,89 @@ func (up SimpleUserPersistor) SearchAll() ([]cycle.SimpleUser, error) {
 
 	return result, err
 }
+
+type AdminUserPersistor struct {
+	db *dbconf.DbConfig
+}
+
+func NewPersistorAdminUser() cycleRep.AdminUserManager {
+	return &AdminUserPersistor{dbconf.NewDbConfig()}
+}
+
+func (ap AdminUserPersistor) Create(u cycle.AdminUser) error {
+
+	c := ap.db.GetCollection(dbconf.CYCLE)
+
+	err := c.Insert(&u)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return err
+
+}
+
+func (ap AdminUserPersistor) Update(user cycle.User,
+	authSpotify *oauth2.Token) error {
+
+	c := ap.db.GetCollection(dbconf.CYCLE)
+
+	wantedUser := bson.M{"adminuser.username": user.Name}
+	changes := bson.M{"$set": bson.M{"adminuser": user,
+		"authspotify": authSpotify}}
+
+	err := c.Update(wantedUser, changes)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return err
+
+}
+
+func (ap AdminUserPersistor) Remove(username string) error {
+
+	c := ap.db.GetCollection(dbconf.CYCLE)
+
+	err := c.Remove(bson.M{"adminuser.username": username})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return err
+
+}
+
+func (ap AdminUserPersistor) Search(username string) (cycle.AdminUser, error) {
+
+	result := cycle.AdminUser{}
+
+	c := ap.db.GetCollection(dbconf.CYCLE)
+
+	err := c.Find(bson.M{"adminuser.username": username}).One(&result)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return result, err
+}
+
+func (ap AdminUserPersistor) SearchAll() ([]cycle.AdminUser, error) {
+
+	result := []cycle.AdminUser{}
+
+	c := ap.db.GetCollection(dbconf.CYCLE)
+
+	iter := c.Find(bson.M{"adminuser": bson.M{"$exists": true}}).Iter()
+	err := iter.All(&result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, err
+}

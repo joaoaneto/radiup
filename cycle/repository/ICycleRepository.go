@@ -46,6 +46,15 @@ type SimpleUserManager interface {
 	SearchAll() ([]cycle.SimpleUser, error)
 }
 
+type AdminUserManager interface {
+	Create(u cycle.AdminUser) error
+	Update(user cycle.User,
+		authSpotify *oauth2.Token) error
+	Remove(username string) error
+	Search(username string) (cycle.AdminUser, error)
+	SearchAll() ([]cycle.AdminUser, error)
+}
+
 type VoluntarySuggestionManager interface {
 	Register(cycleID int, vs cycle.VoluntarySuggestion) error
 	SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error)
