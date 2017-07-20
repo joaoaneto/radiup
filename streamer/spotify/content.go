@@ -1,11 +1,6 @@
 package spotify
 
-<<<<<<< HEAD
-import(
-	"github.com/joaoaneto/spotify"
-=======
 import (
->>>>>>> 8931922901b81676e27fe1405ff30ed1b569bc44
 	"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/spotify"
 )
@@ -30,9 +25,9 @@ func (cs *ContentSpotify) GetPlaylistData(client *spotify.Client) (*spotify.Simp
 /*Return tracks according to the name*/
 func (cs *ContentSpotify) GetMusicData(client *spotify.Client, musicName string) ([]cycle.Music, error) {
 
-  var musicsList []cycle.Music
-  var music cycle.Music
-  result, error := client.Search(musicName, spotify.SearchTypeTrack)
+	var musicsList []cycle.Music
+	var music cycle.Music
+	result, error := client.Search(musicName, spotify.SearchTypeTrack)
 
 	for _, r := range result.Tracks.Tracks {
 		var artistsList []string
