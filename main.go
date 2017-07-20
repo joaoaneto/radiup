@@ -1,13 +1,16 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 
 	"net/http"
-
+	//"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/radiup/cycle/controller"
+	//"github.com/joaoaneto/radiup/cycle/repository/mongo"
+	cycleBusiness "github.com/joaoaneto/radiup/cycle/business"
 	"github.com/joaoaneto/radiup/streamer"
 	"github.com/joaoaneto/radiup/streamer/spotify"
+	"github.com/joaoaneto/radiup/playlist"
 )
 
 func main() {
@@ -34,5 +37,35 @@ func main() {
 	http.HandleFunc("/voluntary/register", controller.RegisterVoluntarySuggestionsHandler)
 	http.HandleFunc("/voluntary/search", controller.SearchVoluntarySuggestionsHandler)
 	http.ListenAndServe(":8080", nil)
+
+	/*url := spotifyStreamer.AuthRPC.GetAuthURL()
+
+	fmt.Println("Please, use this url for auth:")
+	fmt.Println(url)
+
+	client := <-spotifyStreamer.AuthRPC.GetChannel()
+	tkn, _ := client.Token()
+
+
+	usr := cycle.User{Username: "radiupapp"}
+	adm := cycle.AdminUser{AdminUser: usr, AuthSpotify: tkn}
+
+	admRep := mongo.NewPersistorAdminUser()
+	admRep.Create(adm)*/
+
+	auth := spotifyStreamer.AuthRPC.GetAuthenticator()
+
+	dealer := cycleBusiness.NewStreamerSuggestionDealer()
+	ss, _ := dealer.GetUpdatedMusicList(0, auth)
+
+	fmt.Println(ss)
+
+	cycMan := cycleBusiness.NewCycleManager()
+	playGen := playlist.NewPlaylistGenerator(auth)
+	
+	cycMan.NewListener(playGen)
+	cycMan.ManageCycle()
+
+
 
 }

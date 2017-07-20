@@ -63,7 +63,7 @@ func (pg *PlaylistGenerator) GeneratePlaylist(c *cycle.Cycle) {
 				if strSugg.Name == pS.Name {
 					break
 				} else {
-					if j == len(playlistSlice) {
+					if j == (len(playlistSlice) - 1) {
 						playlistSlice = append(playlistSlice, strSugg)
 					}
 				}

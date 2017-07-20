@@ -44,7 +44,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			session.Values["authenticated"] = true
 			session.Save(r, w)
 			fmt.Println("Session save!")
-			http.Redirect(w, r, "/content/list", 301)
+			http.Redirect(w, r, "/", 301)
 			return
 		} else {
 			fmt.Println("Wrong")

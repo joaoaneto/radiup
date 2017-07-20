@@ -30,6 +30,8 @@ func (dealer *StreamerSuggestionDealer) GetUpdatedMusicList(cycleID int, auth sp
 	userPersistor := mongo.NewPersistorSimpleUser()
 	userList, err := userPersistor.SearchAll()
 
+	fmt.Println(userList)
+
 	for _, a := range userList {
 		CheckTokenExpiry(a)
 		client := auth.NewClient(a.AuthSpotify)
