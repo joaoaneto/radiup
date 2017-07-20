@@ -1,7 +1,6 @@
 package mongo
 
 import (
-	"fmt"
 	"log"
 	"time"
 	//"gopkg.in/mgo.v2"
@@ -18,62 +17,62 @@ import (
 //StreamerSuggestion Mongo implementations
 //StreamerSuggestionPersistor .
 type StreamerSuggestionPersistor struct {
-	db *dbconf.DbConfig
+	//db *dbconf.DbConfig
 }
 
 //NewPersistorStreamerSuggestion .
 func NewPersistorStreamerSuggestion() cycleRep.StreamerSuggestionManager {
-	return &StreamerSuggestionPersistor{dbconf.NewDbConfig()}
+	return &StreamerSuggestionPersistor{}
 }
 
 // Register Streamer Suggestion
-func (p StreamerSuggestionPersistor) Register(cs cycle.StreamerSuggestion) error {
-	c := p.db.GetCollection(dbconf.CYCLE)
-
-	err := c.Insert(&cs)
+func (p StreamerSuggestionPersistor) Register(cycleID int, cs cycle.StreamerSuggestion) error {
+	cyclePers := NewPersistorCycle()
+	cycleActual, err := cyclePers.Search(cycleID)
 
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
+
+	cycleActual.CycleStreamerSuggestion = cs
+
+	err = cyclePers.Update(cycleID, cycleActual)
 
 	return err
 }
 
 // SearchAll StreamerSuggestion
-func (p StreamerSuggestionPersistor) SearchAll() (cycle.StreamerSuggestion, error) {
-	c := p.db.GetCollection(dbconf.CYCLE)
-
-	result := []cycle.StreamerSuggestion{}
-
-	iter := c.Find(nil).Iter()
-	err := iter.All(&result)
-	fmt.Println(len(result))
-
-	var actual cycle.StreamerSuggestion
-
-	for _, r := range result {
-		if len(r.Musics) != 0 {
-			actual = r
-			break
-		}
-	}
-
-	return actual, err
-}
-
-// Update StreamerSuggestion
-func (p StreamerSuggestionPersistor) Update(lastModificationDate time.Time, listMusic []cycle.Music) error {
-
-	c := p.db.GetCollection(dbconf.CYCLE)
-
-	wantedSuggestion := bson.M{"modificationdate": lastModificationDate}
-	changes := bson.M{"$set": bson.M{"modificationdate": time.Now(), "musics": listMusic}}
-
-	err := c.Update(wantedSuggestion, changes)
+func (p StreamerSuggestionPersistor) SearchAll(cycleID int) (cycle.StreamerSuggestion, error) {
+	cyclePers := NewPersistorCycle()
+	actualCycle, err := cyclePers.Search(cycleID)
+	var actualStreamerSuggestion cycle.StreamerSuggestion
 
 	if err != nil {
 		log.Fatal(err)
+		return actualStreamerSuggestion, err
 	}
+
+	actualStreamerSuggestion = actualCycle.CycleStreamerSuggestion
+
+	return actualStreamerSuggestion, err
+}
+
+// Update StreamerSuggestion
+func (p StreamerSuggestionPersistor) Update(cycleID int, listMusic []cycle.Music) error {
+	cyclePers := NewPersistorCycle()
+	actualCycle, err := cyclePers.Search(cycleID)
+
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	modif := time.Now()
+
+	actualCycle.CycleStreamerSuggestion = cycle.StreamerSuggestion{Musics: listMusic, ModificationDate: modif}
+
+	err = cyclePers.Update(cycleID, actualCycle)
 
 	return err
 
@@ -85,7 +84,7 @@ type ContentSuggestionPersistor struct {
 }
 
 func NewPersistorContentSuggestion() cycleRep.ContentSuggestionManager {
-	return &ContentSuggestionPersistor{/*dbconf.NewDbConfig()*/}
+	return &ContentSuggestionPersistor{ /*dbconf.NewDbConfig()*/ }
 }
 
 func (p ContentSuggestionPersistor) Register(cycleID int, cs cycle.ContentSuggestion) error {
@@ -93,10 +92,10 @@ func (p ContentSuggestionPersistor) Register(cycleID int, cs cycle.ContentSugges
 	//c := p.db.GetCollection(dbconf.CYCLE)
 	c := NewPersistorCycle()
 
-	cy, err:= c.Search(cycleID)
+	cy, err := c.Search(cycleID)
 
 	cy.CycleContentSuggestion = append(cy.CycleContentSuggestion, cs)
-	
+
 	c.Update(cycleID, cy)
 
 	//err := c.Insert(&cs)
@@ -184,9 +183,9 @@ func (cp CyclePersistor) Update(registeredID int, updatedCycle cycle.Cycle) erro
 	wantedCycle := bson.M{"id": updatedCycle.ID}
 
 	changes := bson.M{"$set": bson.M{"start": updatedCycle.Start,
-		"end":                 updatedCycle.End,
-		"cycletype":           updatedCycle.CycleType,
-		"description":         updatedCycle.Description,
+		"end":                      updatedCycle.End,
+		"cycletype":                updatedCycle.CycleType,
+		"description":              updatedCycle.Description,
 		"cyclevoluntarysuggestion": updatedCycle.CycleVoluntarySuggestion,
 		"cyclestreamersuggestion":  updatedCycle.CycleStreamerSuggestion,
 		"cyclecontentsuggestion":   updatedCycle.CycleContentSuggestion}}
@@ -298,7 +297,7 @@ type VoluntarySuggestionPersistor struct {
 }
 
 func NewPersistorVoluntarySuggestion() cycleRep.VoluntarySuggestionManager {
-	return &VoluntarySuggestionPersistor{/*dbconf.NewDbConfig()*/}
+	return &VoluntarySuggestionPersistor{ /*dbconf.NewDbConfig()*/ }
 }
 
 func (p VoluntarySuggestionPersistor) Register(cycleID int, vs cycle.VoluntarySuggestion) error {
@@ -315,7 +314,6 @@ func (p VoluntarySuggestionPersistor) Register(cycleID int, vs cycle.VoluntarySu
 		log.Fatal(err)
 	}
 
-	
 	return err
 }
 
@@ -445,7 +443,7 @@ func (up SimpleUserPersistor) SearchAll() ([]cycle.SimpleUser, error) {
 
 	c := up.db.GetCollection(dbconf.CYCLE)
 
-	iter := c.Find(nil).Iter()
+	iter := c.Find(bson.M{"simpleuser": bson.M{"$exists": true}}).Iter()
 	err := iter.All(&result)
 
 	if err != nil {
