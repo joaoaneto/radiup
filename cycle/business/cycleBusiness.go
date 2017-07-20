@@ -103,9 +103,9 @@ func (d *Dispatcher) AddListener(cl CycleListener) {
 	d.listeners = append(d.listeners, cl)
 }
 
-func (d *Dispatcher) NotifyAll() {
+func (d *Dispatcher) NotifyAll(c *cycle.Cycle) {
 	for _, m := range d.listeners {
-		m.Notified()
+		m.Notified(c)
 	}
 }
 
@@ -113,20 +113,25 @@ type CycleManager struct {
 	Dis Dispatcher
 }
 
+func NewCycleManager() *CycleManager {
+	return &CycleManager{}
+}
+
 func (cm *CycleManager) NewListener(cl CycleListener) {
 	cm.Dis.AddListener(cl)
 }
 
-func (cm *CycleManager) Notify() {
-	cm.Dis.NotifyAll()
+func (cm *CycleManager) Notify(c *cycle.Cycle) {
+	cm.Dis.NotifyAll(c)
 }
 
-func (cm *CycleManager) ManageCycle(c *cycle.Cycle) {
-
+func (cm *CycleManager) ManageCycle() {
+	c, _ := mongo.NewPersistorCycle().Search(0)
 	for {
 		now := time.Now()
 		if now.Equal(c.End) || now.After(c.End) {
-			cm.Notify()
+			c, _ = mongo.NewPersistorCycle().Search(0)
+			cm.Notify(&c)
 			break
 		}
 	}

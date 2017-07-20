@@ -11,5 +11,5 @@ type StreamerSuggestionOperator interface {
 
 /*The method that will receive de signal from the cycle have to implement this interface*/
 type CycleListener interface {
-	Notified()
+	Notified(c *cycle.Cycle)
 }

@@ -2,9 +2,10 @@ package playlist
 
 import (
 	"github.com/joaoaneto/radiup/cycle"
+	//"github.com/joaoaneto/spotify"
 )
 
 type PlaylistRPC interface {
-	AddTrack(track cycle.Music)
-	DeleteTrack(track cycle.Music)
+	GeneratePlaylist(c *cycle.Cycle)
+	//DeleteTrack(track cycle.Music)
 }
