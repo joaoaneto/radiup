@@ -1,7 +1,9 @@
 package spotify
 
 import(
+	"fmt"
 	"github.com/joaoaneto/spotify"
+	"github.com/joaoaneto/radiup/cycle"
 )
 
 type ContentSpotify struct {
@@ -23,7 +25,25 @@ func (cs *ContentSpotify) GetPlaylistData(client *spotify.Client)  (*spotify.Sim
 
 
 /*Return tracks according to the name*/
-func (cs *ContentSpotify) GetMusicData(client *spotify.Client, musicName string) (*spotify.SearchResult, error){
-	result, error := client.Search(musicName, spotify.SearchTypeTrack)
-	return result, error
+unc (cs *ContentSpotify) GetMusicData(client *spotify.Client, musicName string) ([]cycle.Music, error) {
+  var musicsList []cycle.Music
+  var music cycle.Music
+  result, error := client.Search(musicName, spotify.SearchTypeTrack)
+
+  for _, r := range result.Tracks.Tracks {
+    var artistsList []string
+
+    music.Name = r.SimpleTrack.Name
+    music.ID = r.SimpleTrack.ID.String()
+
+    for _, a := range r.SimpleTrack.Artists {
+      artistsList = append(artistsList, a.Name)
+    }
+
+    music.Artist = artistsList
+
+    musicsList = append(musicsList, music)
+  }
+
+  return musicsList, error
 }

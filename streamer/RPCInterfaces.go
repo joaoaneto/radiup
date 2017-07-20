@@ -10,7 +10,7 @@ import (
 
 /*RPC interfaces */
 type ContentRPC interface {
-	GetMusicData(client *spotify.Client, musicName string) (*spotify.SearchResult, error)
+	GetMusicData(client *spotify.Client, musicName string) ([]cycle.Music, error)
 	GetPlaylistData(client *spotify.Client) (*spotify.SimplePlaylistPage, error)
 }
 
