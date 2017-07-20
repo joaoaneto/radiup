@@ -1,0 +1,22 @@
+{{ define "voluntary_list" }}
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Artista</th>
+      <th>Username</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range $index, $element := . }}
+    <tr>
+      <th scope="row">{{$element.Votes}}</th>
+      <td>{{$element.Track.Name}}</td>
+      <td>{{$element.Track.Artist}}</td>
+      <td>{{$element.VoluntarySuggestionUser}}</td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
+{{ end }}

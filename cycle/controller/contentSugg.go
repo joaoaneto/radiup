@@ -79,7 +79,7 @@ func RegisterContentSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println(newContentSuggestion)
 
-		contentPersistor.Register(newContentSuggestion)
+		contentPersistor.Register(0, newContentSuggestion)
 
 		http.Redirect(w, r, "/content/list", 301)
 	}

@@ -1,0 +1,72 @@
+{{ define "voluntary_search" }}
+
+<!---<div id="text" class="text-center">
+  <h1 style="padding-bottom:21px;padding-top:50px">Selecione a música desejada</h1>
+</div>-->
+
+<div class="search" style="padding-left: 500px; padding-bottom:21px;padding-top:50px">
+  <div class="input-group input-group-lg">
+    <form action="/voluntary/search" class="form-inline my-2 my-lg-0" method="post">
+      <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+  </div>
+</div>
+
+<ul class="list-group">
+{{ range $index, $element := . }}
+   <li class="list-group-item" id={{$element.ID}}>Nome: {{ $element.Name }} - Artist: {{ $element.Artist}}</li>
+{{ end }}
+</ul>
+
+  <!--<li class="list-group-item" id=1>Cras justo odio</li>
+  <li class="list-group-item" id=2>Dapibus ac facilisis in</li>
+  <li class="list-group-item" id=3>Morbi leo risus</li>
+  <li class="list-group-item" id=4>Porta ac consectetur ac</li>
+  <li class="list-group-item" id=5>Vestibulum at eros</li> -->
+
+
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Você confirma a sugestão de música?</h4>
+      </div>
+      <div class="modal-body">
+        Informações de Música
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <form action="/voluntary/list" method="post">
+        <input type="hidden" name="number" id="number" value="">
+          <button type="submit" class="btn btn-primary" value="click">Save changes</button>  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $('.list-group li').click(function(e) {
+        e.preventDefault()
+        
+        $that = $(this);
+        
+        $that.parent().find('li').removeClass('active');
+        $that.addClass('active');
+        $('#myModal').modal('show')
+        $('.modal-body').html("<h3>teste"+this.id+"</h3>")
+        $('#number').val(this.id);
+    });
+})
+</script>
+
+{{ end }}
