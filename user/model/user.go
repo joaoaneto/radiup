@@ -6,19 +6,23 @@ import (
 	//"golang.org/x/oauth2"
 )
 
+type Teste struct {
+	Username string
+}
+
 type SpotifyToken struct {
 	//gorm.Model
-	ID				uint `gorm:"primary_key"`
-	AccessToken 	string
-	TokenType 		string
-	RefreshToken	string
-	Expiry			time.Time
-	UserID			uint
+	ID           uint `gorm:"primary_key"`
+	AccessToken  string
+	TokenType    string
+	RefreshToken string
+	Expiry       time.Time
+	UserID       uint
 }
 
 type User struct {
 	//gorm.Model
-	UserID		 uint `gorm:"primary_key"`
+	UserID   uint `gorm:"primary_key"`
 	Name     string
 	Username string
 	Password string
@@ -28,5 +32,4 @@ type User struct {
 
 	//Relationship
 	SpotifyToken SpotifyToken `gorm:"ForeignKey:UserID"`
-
 }

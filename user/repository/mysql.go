@@ -3,10 +3,10 @@ package repository
 import (
 	"log"
 
-	"github.com/joaoaneto/radiup/user/model"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/joaoaneto/radiup/user/model"
 )
 
 type MySQLConfig struct {
@@ -14,7 +14,7 @@ type MySQLConfig struct {
 }
 
 func NewMySQLConfig() *MySQLConfig {
-	
+
 	db, err := gorm.Open("mysql", "radiup:radiupProject2017@/radiup?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		log.Print("Error in DB Connection.")
@@ -46,7 +46,7 @@ func (mysqlcfg *MySQLConfig) InitMySQLDb() {
 }
 
 func (mysqlcfg *MySQLConfig) CloseMySQLDb() {
-	
+
 	mysqlcfg.DbInstance.Close()
 
 }
@@ -60,7 +60,7 @@ func NewSimpleUserPersistor(mysqlcfg *MySQLConfig) SimpleUserManager {
 }
 
 func (sup SimpleUserPersistor) Create(u *model.User) error {
-	
+
 	err := sup.db.DbInstance.Create(u).Error
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (sup SimpleUserPersistor) Update(u *model.User) error {
 }
 
 func (sup SimpleUserPersistor) Remove(username string) error {
-	
+
 	user, err := sup.Search(username)
 	if err != nil {
 		return err
@@ -95,19 +95,19 @@ func (sup SimpleUserPersistor) Remove(username string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
 func (sup SimpleUserPersistor) Search(username string) (model.User, error) {
-	
+
 	user := model.User{}
 
 	err := sup.db.DbInstance.Where(&model.User{Username: username}).First(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}
-	
+
 	return user, nil
 }
 

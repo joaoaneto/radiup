@@ -1,8 +1,8 @@
 package service
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 )
 
 func StartServer(port string) {
@@ -11,7 +11,7 @@ func StartServer(port string) {
 	http.Handle("/", r)
 
 	log.Println("Start HTTP Server at " + port)
-	err := http.ListenAndServe(":" + port, nil)
+	err := http.ListenAndServe(":"+port, nil)
 
 	if err != nil {
 		log.Println("An error ocurred starting HTTP listener at port: " + port)

@@ -2,8 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	"net/http"
+	"fmt"
 	"github.com/gorilla/mux"
+	"net/http"
 	"strconv"
 
 	"github.com/joaoaneto/radiup/user/model"
@@ -24,7 +25,7 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := model.User{}
 
 	decoder := json.NewDecoder(r.Body)
-	
+
 	err := decoder.Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -40,11 +41,11 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	
+
 }
 
 func GetUserHandler(w http.ResponseWriter, r *http.Request) {
-	
+
 	// Get user in db
 	var userId = mux.Vars(r)["userId"]
 
@@ -101,7 +102,7 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	var userId = mux.Vars(r)["userId"]
-	
+
 	sup := repository.NewSimpleUserPersistor(Db)
 
 	err := sup.Remove(userId)
@@ -111,5 +112,20 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+
+}
+
+func Authenticate(w http.ResponseWriter, r *http.Request) {
+
+	test := model.Teste{}
+
+	decoder := json.NewDecoder(r.Body)
+
+	err := decoder.Decode(&test)
+	if err != nil {
+		return
+	}
+
+	fmt.Println(test)
 
 }

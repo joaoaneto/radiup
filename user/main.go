@@ -17,5 +17,5 @@ func main() {
 
 	service.Db = mysql
 	service.StartServer("6767")
-	
+
 }

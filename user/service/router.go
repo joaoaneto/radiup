@@ -6,9 +6,9 @@ import (
 )
 
 type Route struct {
-	Name string
-	Method string
-	Pattern string
+	Name        string
+	Method      string
+	Pattern     string
 	HandlerFunc http.HandlerFunc
 }
 
@@ -16,56 +16,58 @@ type Routes []Route
 
 // Set of Routes/Endpoints that make an API REST
 
-var routes = Routes {
-	
-	Route {
+var routes = Routes{
+
+	// CRUD
+
+	Route{
 		"RegisterUser",
 		"POST",
 		"/register",
 		RegisterUserHandler,
 	},
 
-	Route {
+	Route{
 		"GetUser",
 		"GET",
 		"/user/{userId}",
 		GetUserHandler,
 	},
 
-	Route {
+	Route{
 		"DeleteUser",
 		"DELETE",
 		"/user/{userId}",
 		DeleteUserHandler,
 	},
 
-	Route {
+	Route{
 		"UpdateUser",
 		"PUT",
 		"/user/{userId}",
 		UpdateUserHandler,
 	},
 
-	Route {
+	//Authentication
+
+	Route{
 		"Authenticate",
 		"POST",
 		"/authenticate",
-		nil,
+		Authenticate,
 	},
-
 }
-
 
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
-	
+
 	for _, route := range routes {
 
 		router.Methods(route.Method).
-		Path(route.Pattern).
-		Name(route.Name).
-		Handler(route.HandlerFunc)
+			Path(route.Pattern).
+			Name(route.Name).
+			Handler(route.HandlerFunc)
 
 	}
 
