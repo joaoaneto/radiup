@@ -3,9 +3,10 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 
 	"github.com/joaoaneto/radiup/user/model"
 	"github.com/joaoaneto/radiup/user/repository"
@@ -19,6 +20,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"SimpleUser":{"Name":"Neto
 */
 
 var Db *repository.MySQLConfig
+var MessagingClient messaging.IMessagingClient
 
 func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 
