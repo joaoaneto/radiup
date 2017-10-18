@@ -1,4 +1,4 @@
-package streamer
+package service
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 
 /*RPC interfaces */
 type ContentRPC interface {
-	GetMusicData(client *spotify.Client, musicName string) ([]cycle.Music, error)
+	GetMusicData(client *spotify.Client, musicName string) ([]cycle.Music, error) //reformular
 	GetPlaylistData(client *spotify.Client) (*spotify.SimplePlaylistPage, error)
 }
 
@@ -21,10 +21,9 @@ type SocialRPC interface {
 }
 
 type AuthRPC interface {
-	NewAuthenticator(redirectURI string)
-	SetAuthInfo(auth OAuthInfo)
+	NewAuthenticator()
 	GetAuthenticator() spotify.Authenticator
 	NewClientAuth(w http.ResponseWriter, r *http.Request)
 	GetAuthURL() string
-	GetChannel() chan *spotify.Client
+	//GetChannel() chan *spotify.Client
 }

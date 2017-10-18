@@ -16,10 +16,12 @@ func NewContentSpotify() *ContentSpotify {
 
 /*Return all the user's playlists*/
 func (cs *ContentSpotify) GetPlaylistData(client *spotify.Client) (*spotify.SimplePlaylistPage, error) {
+
 	user, error := client.CurrentUser()
 	user_Id := user.User.ID
 	playlist, _ := client.GetPlaylistsForUser(user_Id)
 	return playlist, error
+
 }
 
 /*Return tracks according to the name*/

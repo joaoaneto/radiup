@@ -1,9 +1,9 @@
-package streamer
+package service
 
 type Streamer struct {
-	Name      string
-	AuthRPC   AuthRPC
-	SocialRPC SocialRPC
+	Name       string
+	AuthRPC    AuthRPC
+	SocialRPC  SocialRPC
 	ContentRPC ContentRPC
 	/*
 
