@@ -15,7 +15,7 @@ type MySQLConfig struct {
 
 func NewMySQLConfig() *MySQLConfig {
 
-	db, err := gorm.Open("mysql", "radiup:radiupProject2017@/radiup?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "radiup:radiup@/radiup?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		log.Print("Error in DB Connection.")
 	}

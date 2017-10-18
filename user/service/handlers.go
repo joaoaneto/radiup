@@ -13,14 +13,15 @@ import (
 )
 
 /*
-curl -H "Content-Type: application/json" -X POST -d '{"SimpleUser":{"Name":"Neto", "Username": "netoax",
-	"Password":"teste", "BirthDay":"2015-09-15T14:00:12-00:00", "Email":"joao.alexandre@upe.br", "Sex":"Masculino"},
- 	"AuthSpotify":{"accesstoken":"asdasdasda", "tokentype":"Bearer", "refreshtoken":"asdadasd",
-	"expiry":"2015-09-15T14:00:12-00:00"}}' http://localhost:6767/register
+curl -H "Content-Type: application/json" -X POST -d '{"Name":"João Neto", "Username": "netoax",
+"Password":"teste", "BirthDay":"2015-09-15T14:00:12-00:00", "Email":"joao.alexandre@upe.br",
+"Sex":"Masculino", "SpotifyToken": {"AccessToken": "token-test", "TokenType": "aloka",
+"RefreshToken": "cê é louco", "Expiry": "2015-09-15T14:00:12-00:00"}}' http://localhost:6767/register
 */
 
 var Db *repository.MySQLConfig
-var MessagingClient messaging.IMessagingClient
+
+//var MessagingClient messaging.IMessagingClient
 
 func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -34,6 +35,8 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(user)
+
 	sup := repository.NewSimpleUserPersistor(Db)
 
 	err = sup.Create(&user)
@@ -45,6 +48,12 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 
 }
+
+/*func notifyTest(account model.User) {
+	go func(account model.User) {
+		notification := model.
+	}
+}*/
 
 func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 
