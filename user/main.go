@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -8,6 +9,7 @@ import (
 
 	"github.com/joaoaneto/radiup/common/messaging"
 
+	"github.com/joaoaneto/radiup/user/model"
 	"github.com/joaoaneto/radiup/user/repository"
 	"github.com/joaoaneto/radiup/user/service"
 )
@@ -32,6 +34,14 @@ func main() {
 func onMessage(delivery amqp.Delivery) {
 	fmt.Printf("Got a message: %v\n", string(delivery.Body))
 	log.Print("teste")
+
+	teste, _ := json.Marshal(string(delivery.Body))
+	oAuthToken := model.SpotifyToken{}
+
+	json.Unmarshal(delivery.Body, &oAuthToken)
+
+	fmt.Println(teste)
+
 }
 
 func initializeMessaging(amqp_server_url string) error {

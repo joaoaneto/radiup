@@ -12,11 +12,11 @@ type Teste struct {
 
 type SpotifyToken struct {
 	//gorm.Model
-	ID           uint `gorm:"primary_key"`
-	AccessToken  string
-	TokenType    string
-	RefreshToken string
-	Expiry       time.Time
+	ID           uint      `gorm:"primary_key"`
+	AccessToken  string    `json:"access_token"`
+	TokenType    string    `json:"token_type"`
+	RefreshToken string    `json:"refresh_token"`
+	Expiry       time.Time `json:"expiry"`
 	UserID       uint
 }
 
