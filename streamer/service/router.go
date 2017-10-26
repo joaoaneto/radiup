@@ -18,17 +18,34 @@ type Routes []Route
 var routes = Routes{
 
 	Route{
+		"GetAuthURI",
+		"GET",
+		"/auth/uri",
+		GetAuthURIHandler,
+	},
+	Route{
 		"GetMusicData",
 		"GET",
 		"/music/{musicName}",
 		GetMusicDataHandler,
 	},
-
 	Route{
-		"GetAuthURI",
+		"GetPlaylistData",
 		"GET",
-		"/auth/uri",
-		GetAuthURIHandler,
+		"/playlist",
+		GetPlaylistDataHandler,
+	},
+	Route{
+		"GetInstantMusic",
+		"GET",
+		"/music",
+		GetInstantMusicHandler,
+	},
+	Route{
+		"GetLastPlayedMusics",
+		"GET",
+		"/music/last",
+		GetLastPlayedMusicsHandler,
 	},
 
 	// Route{

@@ -1,7 +1,7 @@
 package spotify
 
 import (
-	"github.com/joaoaneto/radiup/cycle"
+	"github.com/joaoaneto/radiup/streamer/model"
 	"github.com/joaoaneto/spotify"
 )
 
@@ -14,11 +14,11 @@ func NewSocialSpotify() *SocialSpotify {
 }
 
 // GetInstant picks up the music the user is currently listening to.
-func (s *SocialSpotify) GetInstant(client *spotify.Client) (cycle.Music, error) {
+func (s *SocialSpotify) GetInstant(client *spotify.Client) (model.Music, error) {
 	current, err := client.PlayerCurrentlyPlaying()
 
 	if current == nil {
-		return cycle.Music{}, err
+		return model.Music{}, err
 	}
 
 	artistSpotify := current.Item.Artists
@@ -28,19 +28,19 @@ func (s *SocialSpotify) GetInstant(client *spotify.Client) (cycle.Music, error) 
 		artistName = append(artistName, a.Name)
 	}
 
-	return cycle.Music{
+	return model.Music{
 		Name:     current.Item.Name,
 		Artist:   artistName,
 		ID:       current.Item.ID.String(),
 		SourceID: 0,
-	}, err
+	}, nil
 
 }
 
 // GetLastPlayedMusics picks up a list of songs that the user has heard recently.
-func (s *SocialSpotify) GetLastPlayedMusics(client *spotify.Client) ([]cycle.Music, error) {
+func (s *SocialSpotify) GetLastPlayedMusics(client *spotify.Client) ([]model.Music, error) {
 	list, err := client.PlayerRecentlyPlayed()
-	var musicList []cycle.Music
+	var musicList []model.Music
 
 	if list == nil {
 		return musicList, err
@@ -53,7 +53,7 @@ func (s *SocialSpotify) GetLastPlayedMusics(client *spotify.Client) ([]cycle.Mus
 			artistName = append(artistName, b.Name)
 		}
 
-		newMusic := cycle.Music{
+		newMusic := model.Music{
 			Name:     a.Track.Name,
 			Artist:   artistName,
 			ID:       a.Track.ID.String(),

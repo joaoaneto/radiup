@@ -13,6 +13,8 @@ func main() {
 
 	fmt.Print("Streamer Server")
 
+	service.Start()
+
 	initializeMessaging("amqp://guest:guest@localhost:5672")
 
 	service.StartServer("6868")
