@@ -1,4 +1,4 @@
-package cycle
+package model
 
 type ContentSuggestion struct {
 	Title                 string

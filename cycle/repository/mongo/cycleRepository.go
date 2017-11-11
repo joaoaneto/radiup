@@ -5,7 +5,7 @@ import (
 	"time"
 	//"gopkg.in/mgo.v2"
 
-	"github.com/joaoaneto/radiup/cycle"
+	cycle "github.com/joaoaneto/radiup/cycle/model"
 	cycleRep "github.com/joaoaneto/radiup/cycle/repository"
 	"github.com/joaoaneto/radiup/dbconf"
 	"golang.org/x/oauth2"

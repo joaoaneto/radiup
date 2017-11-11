@@ -1,14 +1,14 @@
-package business
+package spotify
 
 import (
 	"time"
 
 	"fmt"
 
-	"github.com/joaoaneto/radiup/cycle"
+	cycle "github.com/joaoaneto/radiup/cycle/model"
 	"github.com/joaoaneto/radiup/cycle/repository/mongo"
-	"github.com/joaoaneto/radiup/streamer"
-	streamerSpotify "github.com/joaoaneto/radiup/streamer/spotify"
+	streamer "github.com/joaoaneto/radiup/streamer/model"
+	streamerSpotify "github.com/joaoaneto/radiup/streamer/service/spotify"
 	"github.com/joaoaneto/spotify"
 )
 

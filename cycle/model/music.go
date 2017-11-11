@@ -1,4 +1,4 @@
-package cycle
+package model
 
 import (
 	"time"

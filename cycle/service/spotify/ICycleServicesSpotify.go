@@ -1,7 +1,7 @@
-package business
+package spotify
 
 import (
-	"github.com/joaoaneto/radiup/cycle"
+	cycle "github.com/joaoaneto/radiup/cycle/model"
 	"github.com/joaoaneto/spotify"
 )
 
