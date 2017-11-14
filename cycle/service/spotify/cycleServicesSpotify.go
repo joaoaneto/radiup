@@ -1,6 +1,6 @@
 package spotify
 
-import (
+/*import (
 	"time"
 
 	"fmt"
@@ -10,11 +10,11 @@ import (
 	streamer "github.com/joaoaneto/radiup/streamer/model"
 	streamerSpotify "github.com/joaoaneto/radiup/streamer/service/spotify"
 	"github.com/joaoaneto/spotify"
-)
+)*/
 
-type StreamerSuggestionDealer struct{}
+//type StreamerSuggestionDealer struct{}
 
-func NewStreamerSuggestionDealer() StreamerSuggestionOperator {
+/*func NewStreamerSuggestionDealer() StreamerSuggestionOperator {
 	return &StreamerSuggestionDealer{}
 }
 
@@ -78,9 +78,9 @@ func (dealer *StreamerSuggestionDealer) GetUpdatedMusicList(cycleID int, auth sp
 	sugg, err = streamerSuggestionPersistor.SearchAll(cycleID)
 
 	return sugg, err
-}
+}*/
 
-func CreateCycle(id int, startTime time.Time, endTime time.Time, cycleType string,
+/*func CreateCycle(id int, startTime time.Time, endTime time.Time, cycleType string,
 	description string) {
 
 	cycle := cycle.Cycle{
@@ -90,10 +90,8 @@ func CreateCycle(id int, startTime time.Time, endTime time.Time, cycleType strin
 		CycleType:   cycleType,
 		Description: description}
 
-	/*Call cycle persistor*/
 	cyclePersistor := mongo.NewPersistorCycle()
 
-	/*Saving cycle*/
 	cyclePersistor.Create(cycle)
 }
 
@@ -151,4 +149,4 @@ func CheckTokenExpiry(user cycle.SimpleUser) {
 		userPersistor.Update(user.SimpleUser.Username, user.SimpleUser.Name, user.SimpleUser.Password, user.SimpleUser.BirthDay, user.SimpleUser.Email, user.SimpleUser.Sex, ntkn)
 	}
 
-}
+}*/
