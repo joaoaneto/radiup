@@ -1,4 +1,4 @@
-package playlist
+package service
 
 import (
 	"github.com/joaoaneto/radiup/cycle"

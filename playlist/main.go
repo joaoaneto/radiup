@@ -3,10 +3,7 @@ package main
 import (
 	"fmt"
 
-	//"github.com/joaoaneto/radiup/common/messaging"
-
 	"github.com/joaoaneto/radiup/playlist/service"
-	//"github.com/joaoaneto/radiup/streamer/service/spotify"
 )
 
 func main() {
@@ -20,6 +17,7 @@ func main() {
 	service.StartServer("6868")
 
 }
+
 /*
 func initializeMessaging(amqp_server_url string) {
 
