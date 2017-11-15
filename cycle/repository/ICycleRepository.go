@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	"github.com/joaoaneto/radiup/cycle"
+	cycle "github.com/joaoaneto/radiup/cycle/model"
 	"golang.org/x/oauth2"
 )
 
