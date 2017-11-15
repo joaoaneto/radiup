@@ -26,37 +26,8 @@ var routes = Routes{
 	"POST",
 	"/register",
 	RegisterUserHandler,
-},
+}*/
 
-Route{
-	"GetUser",
-	"GET",
-	"/user/{userId}",
-	GetUserHandler,
-},
-
-Route{
-	"DeleteUser",
-	"DELETE",
-	"/user/{userId}",
-	DeleteUserHandler,
-},
-
-Route{
-	"UpdateUser",
-	"PUT",
-	"/user/{userId}",
-	UpdateUserHandler,
-},
-
-//Authentication
-
-Route{
-	"Authenticate",
-	"POST",
-	"/authenticate",
-	Authenticate,
-},*/
 }
 
 func NewRouter() *mux.Router {
