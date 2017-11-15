@@ -103,7 +103,7 @@ func (sup SimpleUserPersistor) Search(username string) (model.User, error) {
 
 	user := model.User{}
 
-	err := sup.db.DbInstance.Where(&model.User{Username: username}).First(&user).Error
+	err := sup.db.DbInstance.Where("username = ?", username).First(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}

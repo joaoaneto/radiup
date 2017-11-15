@@ -71,6 +71,8 @@ func (a *AuthenticatorSpotify) NewClientAuth(w http.ResponseWriter, r *http.Requ
 
 	//user := mux.Vars(r)["user"]
 
+	fmt.Println(tok)
+
 	notifyUser(tok, "teste")
 
 }

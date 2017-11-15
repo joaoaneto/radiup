@@ -3,10 +3,14 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
+	"time"
+
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/joaoaneto/radiup/user/model"
 	"github.com/joaoaneto/radiup/user/repository"
@@ -23,9 +27,14 @@ var Db *repository.MySQLConfig
 
 //var MessagingClient messaging.IMessagingClient
 
+type Auth struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 
-	user := model.User{}
+	user := model.User{BirthDay: time.Now()}
 
 	decoder := json.NewDecoder(r.Body)
 
@@ -35,7 +44,7 @@ func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(user)
+	fmt.Println(r.Body)
 
 	sup := repository.NewSimpleUserPersistor(Db)
 
@@ -126,17 +135,61 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Authenticate(w http.ResponseWriter, r *http.Request) {
+func Authentication(w http.ResponseWriter, r *http.Request) {
 
-	test := model.Teste{}
+	// TO-DO ----> Generate JWT
+
+	var auth Auth
 
 	decoder := json.NewDecoder(r.Body)
 
-	err := decoder.Decode(&test)
+	err := decoder.Decode(&auth)
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(test)
+	fmt.Println("Lala: ", auth)
 
+	authStatus := userAuthenticate(auth.Username, auth.Password)
+
+	data, _ := json.Marshal(authStatus)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
+
+func generateHash(password string) []byte {
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return hash
+
+}
+
+func userAuthenticate(login string, password string) bool {
+
+	simpleUserPersistor := repository.NewSimpleUserPersistor(Db)
+	simpleUser, err := simpleUserPersistor.Search(login)
+	if err != nil {
+		return false
+	}
+
+	/*if err := bcrypt.CompareHashAndPassword(simpleUser.SimpleUser.Password, []byte(password)); err != nil {
+		return false
+	}*/
+
+	fmt.Println(simpleUser)
+
+	if simpleUser.Password == password {
+		return true
+	}
+
+	return false
 }
