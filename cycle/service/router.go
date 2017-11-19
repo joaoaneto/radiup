@@ -19,15 +19,19 @@ type Routes []Route
 
 var routes = Routes{
 
-// CRUD
+	Route{
+		"RegisterVoluntarySuggestion",
+		"POST",
+		"/suggestion",
+		RegisterVoluntarySuggestionHandler,
+	},
 
-/*Route{
-	"RegisterUser",
-	"POST",
-	"/register",
-	RegisterUserHandler,
-}*/
-
+	Route{
+		"GetVoluntarySuggestion",
+		"GET",
+		"/suggestion/list",
+		GetVoluntarySuggestionHandler,
+	},
 }
 
 func NewRouter() *mux.Router {

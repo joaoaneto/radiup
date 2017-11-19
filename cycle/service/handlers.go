@@ -2,65 +2,58 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
-	"time"
-
-	"github.com/gorilla/mux"
-	"golang.org/x/crypto/bcrypt"
-
-	"github.com/joaoaneto/radiup/cycle"
 	"github.com/joaoaneto/radiup/cycle/model"
-	"github.com/joaoaneto/radiup/cycle/repository"
+	"github.com/joaoaneto/radiup/cycle/repository/mongo"
+	"github.com/joaoaneto/radiup/user/repository"
 )
 
 var Db *repository.MySQLConfig
 
-func RegisterVoluntarySuggestionHandler()w http.ResponseWriter, r *http.Request){
-	var vs cycle.VoluntarySuggestion{nil, nil, nil, nil}
+func RegisterVoluntarySuggestionHandler(w http.ResponseWriter, r *http.Request) {
+
+	voluntarySuggestion := model.VoluntarySuggestion{}
 
 	decoder := json.NewDecoder(r.Body)
 
-	cp := repository.NewPersistorCycle()
-	rc := cp.Search(0)
-	if rc != nil {
+	//cp := mongo.NewPersistorCycle()
+
+	/*cycle, err := cp.Search(0)
+	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	}
+	}*/
 
-	err := decoder.Decode(&vs)
+	err := decoder.Decode(&voluntarySuggestion)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	nvs := repository.NewPersistorVoluntarySuggestion()
-	err = nvs.Register(rc.ID, vs)
+	nvs := mongo.NewPersistorVoluntarySuggestion()
+
+	err = nvs.Register(0, voluntarySuggestion)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)	
+	w.WriteHeader(http.StatusOK)
 }
 
 func GetVoluntarySuggestionHandler(w http.ResponseWriter, r *http.Request) {
 
-	var localCycle cycle.Cycle{0, nil, nil, nil, nil, nil, nil, nil}
+	vsp := mongo.NewPersistorVoluntarySuggestion()
 
-	cp := repository.NewPersistorCycle()	
-	cp.Create(localCycle)
-
-	listVS, err := cp.SearchAll(localCycle.ID)
+	voluntarySuggestions, err := vsp.SearchAll(0)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	data, err := json.Marshal(listVS)
+	data, err := json.Marshal(voluntarySuggestions)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
