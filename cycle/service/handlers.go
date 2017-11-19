@@ -19,16 +19,39 @@ import (
 
 var Db *repository.MySQLConfig
 
-func GetVoluntarySuggestionsHandler(w http.ResponseWriter, r *http.Request) {
+func RegisterVoluntarySuggestionHandler()w http.ResponseWriter, r *http.Request){
+	var vs cycle.VoluntarySuggestion{nil, nil, nil, nil}
 
-	/* Get user in db
-	var userId = mux.Vars(r)["userId"]
+	decoder := json.NewDecoder(r.Body)
 
-	sup := repository.NewSimpleUserPersistor(Db)
-	*/
+	cp := repository.NewPersistorCycle()
+	rc := cp.Search(0)
+	if rc != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	err := decoder.Decode(&vs)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	nvs := repository.NewPersistorVoluntarySuggestion()
+	err = nvs.Register(rc.ID, vs)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)	
+}
+
+func GetVoluntarySuggestionHandler(w http.ResponseWriter, r *http.Request) {
+
 	var localCycle cycle.Cycle{0, nil, nil, nil, nil, nil, nil, nil}
 
-	cp := repository.NewCyclePersistor(Db)	
+	cp := repository.NewPersistorCycle()	
 	cp.Create(localCycle)
 
 	listVS, err := cp.SearchAll(localCycle.ID)
