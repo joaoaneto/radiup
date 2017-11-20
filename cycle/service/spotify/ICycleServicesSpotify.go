@@ -13,3 +13,7 @@ type StreamerSuggestionOperator interface {
 type CycleListener interface {
 	Notified(c *cycle.Cycle)
 }
+
+type VoluntarySuggestionOperator interface {
+	VerifyUserVote(cycleID int, musicID string, user cycle.User) (bool, error)
+}

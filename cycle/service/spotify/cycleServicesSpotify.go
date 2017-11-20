@@ -1,16 +1,33 @@
 package spotify
 
-/*import (
-	"time"
-
-	"fmt"
-
+import (
 	cycle "github.com/joaoaneto/radiup/cycle/model"
 	"github.com/joaoaneto/radiup/cycle/repository/mongo"
-	streamer "github.com/joaoaneto/radiup/streamer/model"
-	streamerSpotify "github.com/joaoaneto/radiup/streamer/service/spotify"
-	"github.com/joaoaneto/spotify"
-)*/
+)
+
+type VoluntarySuggestionDealer struct{}
+
+func NewVoluntarySuggestionDealer() VoluntarySuggestionOperator {
+	return &VoluntarySuggestionDealer{}
+}
+
+func (dealer *VoluntarySuggestionDealer) VerifyUserVote(cycleID int, musicID string, user cycle.User) (bool, error) {
+	voluntarySuggestionPersistor := mongo.NewPersistorVoluntarySuggestion()
+	sugg, err := voluntarySuggestionPersistor.Search(cycleID, musicID)
+
+	if err != nil {
+		return true, err
+	}
+
+	for _, suggUser := range sugg.VoluntarySuggestionUsers {
+		if suggUser.Username == user.Username {
+			return false, err
+		}
+	}
+
+	return false, err
+
+}
 
 //type StreamerSuggestionDealer struct{}
 
