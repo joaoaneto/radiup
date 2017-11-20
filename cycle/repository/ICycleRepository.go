@@ -59,4 +59,5 @@ type VoluntarySuggestionManager interface {
 	Register(cycleID int, vs cycle.VoluntarySuggestion) error
 	SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error)
 	Search(cycleID int, musicID string) (cycle.VoluntarySuggestion, error)
+	Update(vs cycle.VoluntarySuggestion) error
 }

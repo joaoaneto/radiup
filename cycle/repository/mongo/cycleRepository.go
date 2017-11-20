@@ -293,22 +293,22 @@ func (mp MusicPersistor) Search(id string) (cycle.Music, error) {
 /*VoluntarySuggestion Mongo implementations*/
 
 type VoluntarySuggestionPersistor struct {
-	//db *dbconf.DbConfig
+	db *dbconf.DbConfig
 }
 
 func NewPersistorVoluntarySuggestion() cycleRep.VoluntarySuggestionManager {
-	return &VoluntarySuggestionPersistor{ /*dbconf.NewDbConfig()*/ }
+	return &VoluntarySuggestionPersistor{dbconf.NewDbConfig()}
 }
 
 func (p VoluntarySuggestionPersistor) Register(cycleID int, vs cycle.VoluntarySuggestion) error {
 
-	//c := p.db.GetCollection(dbconf.CYCLE)
-	//err := c.Insert(&v)
-	cp := NewPersistorCycle()
-	c, err := cp.Search(cycleID)
+	c := p.db.GetCollection(dbconf.CYCLE)
+	err := c.Insert(&vs)
+	/*cp := NewPersistorCycle()
+	c, err := cp.Search(cycleID)*/
 
-	c.CycleVoluntarySuggestion = append(c.CycleVoluntarySuggestion, vs)
-	cp.Update(cycleID, c)
+	//c.CycleVoluntarySuggestion = append(c.CycleVoluntarySuggestion, vs)
+	//cp.Update(cycleID, c)
 
 	if err != nil {
 		log.Fatal(err)
@@ -319,50 +319,44 @@ func (p VoluntarySuggestionPersistor) Register(cycleID int, vs cycle.VoluntarySu
 
 func (p VoluntarySuggestionPersistor) SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error) {
 
-	//c := p.db.GetCollection(dbconf.CYCLE)
+	c := p.db.GetCollection(dbconf.CYCLE)
 
-	//result := []cycle.VoluntarySuggestion{}
+	result := []cycle.VoluntarySuggestion{}
 
-	//err := c.Find(bson.M{"name": nameUser}).One(&result)
-	cp := NewPersistorCycle()
-	c, err := cp.Search(cycleID)
+	err := c.Find(nil).All(&result)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("[SearchAll] - VoluntarySuggetions: ", err)
 	}
 
-	result := c.CycleVoluntarySuggestion
-
-	return result, err
+	return result, nil
 
 }
 
 func (p VoluntarySuggestionPersistor) Search(cycleID int, musicID string) (cycle.VoluntarySuggestion, error) {
 
-	//c := p.db.GetCollection(dbconf.CYCLE)
+	c := p.db.GetCollection(dbconf.CYCLE)
 
-	//result := []cycle.VoluntarySuggestion{}
+	result := cycle.VoluntarySuggestion{}
 
-	//err := c.Find(bson.M{"name": nameUser}).One(&result)
-	cp := NewPersistorCycle()
-	c, err := cp.Search(cycleID)
+	err := c.Find(bson.M{"track.id": musicID}).One(&result)
 
+	return result, err
+}
+
+func (p VoluntarySuggestionPersistor) Update(vs cycle.VoluntarySuggestion) error {
+
+	c := p.db.GetCollection(dbconf.CYCLE)
+
+	wantedVs := bson.M{"track.id": vs.Track.ID}
+	changes := bson.M{"$set": bson.M{"users": vs.Users, "votes": vs.Votes}}
+
+	err := c.Update(wantedVs, changes)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	result := c.CycleVoluntarySuggestion
-
-	var sugg cycle.VoluntarySuggestion
-
-	for _, i := range result {
-		if i.Track.ID == musicID {
-			sugg = i
-			break
-		}
-	}
-
-	return sugg, err
+	return nil
 
 }
 

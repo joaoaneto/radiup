@@ -15,5 +15,6 @@ type CycleListener interface {
 }
 
 type VoluntarySuggestionOperator interface {
-	VerifyUserVote(cycleID int, musicID string, user cycle.User) (bool, error)
+	VerifyUserVote(cycleID int, musicID string, user string) (bool, error)
+	HasVoluntarySuggestion(cycleID int, musicID string) bool
 }

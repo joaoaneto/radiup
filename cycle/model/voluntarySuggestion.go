@@ -5,8 +5,8 @@ import (
 )
 
 type VoluntarySuggestion struct {
-	Track                    Music
-	VoluntarySuggestionUsers []User
-	Timestamp                time.Time
-	/*Votes                   int*/
+	Track     Music
+	Users     []string
+	Timestamp time.Time
+	Votes     int
 }

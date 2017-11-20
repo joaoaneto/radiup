@@ -1,7 +1,8 @@
 package spotify
 
 import (
-	cycle "github.com/joaoaneto/radiup/cycle/model"
+	"log"
+
 	"github.com/joaoaneto/radiup/cycle/repository/mongo"
 )
 
@@ -11,21 +12,36 @@ func NewVoluntarySuggestionDealer() VoluntarySuggestionOperator {
 	return &VoluntarySuggestionDealer{}
 }
 
-func (dealer *VoluntarySuggestionDealer) VerifyUserVote(cycleID int, musicID string, user cycle.User) (bool, error) {
-	voluntarySuggestionPersistor := mongo.NewPersistorVoluntarySuggestion()
-	sugg, err := voluntarySuggestionPersistor.Search(cycleID, musicID)
+func (daeler *VoluntarySuggestionDealer) HasVoluntarySuggestion(cycleID int, musicID string) bool {
 
+	voluntarySuggestionPersistor := mongo.NewPersistorVoluntarySuggestion()
+
+	_, err := voluntarySuggestionPersistor.Search(0, musicID)
 	if err != nil {
-		return true, err
+		return false
 	}
 
-	for _, suggUser := range sugg.VoluntarySuggestionUsers {
-		if suggUser.Username == user.Username {
-			return false, err
+	return true
+
+}
+
+func (dealer *VoluntarySuggestionDealer) VerifyUserVote(cycleID int, musicID string, user string) (bool, error) {
+
+	voluntarySuggestionPersistor := mongo.NewPersistorVoluntarySuggestion()
+
+	sugg, err := voluntarySuggestionPersistor.Search(cycleID, musicID)
+	if err != nil {
+		log.Println(err)
+		return false, err
+	}
+
+	for _, suggUser := range sugg.Users {
+		if suggUser == user {
+			return true, nil
 		}
 	}
 
-	return false, err
+	return false, nil
 
 }
 
