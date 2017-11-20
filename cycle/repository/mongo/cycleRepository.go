@@ -337,34 +337,34 @@ func (p VoluntarySuggestionPersistor) SearchAll(cycleID int) ([]cycle.VoluntaryS
 
 }
 
-func (p VoluntarySuggestionPersistor) Search(cycleID int, musicName cycle.Music.ID) (cycle.VoluntarySuggestion, error) {
-	
-		//c := p.db.GetCollection(dbconf.CYCLE)
-	
-		//result := []cycle.VoluntarySuggestion{}
-	
-		//err := c.Find(bson.M{"name": nameUser}).One(&result)
-		cp := NewPersistorCycle()
-		c, err := cp.Search(cycleID)
-	
-		if err != nil {
-			log.Fatal(err)
-		}
-	
-		result := c.CycleVoluntarySuggestion
-		
-		var sugg cycle.VoluntarySuggestion
-		
-		for _, i := range result {
-			if i.Track.ID == musicName{
-				sugg = i
-				break
-			}
-		}
+func (p VoluntarySuggestionPersistor) Search(cycleID int, musicID string) (cycle.VoluntarySuggestion, error) {
 
-		return sugg, err
-	
+	//c := p.db.GetCollection(dbconf.CYCLE)
+
+	//result := []cycle.VoluntarySuggestion{}
+
+	//err := c.Find(bson.M{"name": nameUser}).One(&result)
+	cp := NewPersistorCycle()
+	c, err := cp.Search(cycleID)
+
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	result := c.CycleVoluntarySuggestion
+
+	var sugg cycle.VoluntarySuggestion
+
+	for _, i := range result {
+		if i.Track.ID == musicID {
+			sugg = i
+			break
+		}
+	}
+
+	return sugg, err
+
+}
 
 /*func (v VoluntarySuggestion) RemoveVSuggestion(nameUser string) {
 
