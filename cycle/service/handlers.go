@@ -81,3 +81,25 @@ func GetVoluntarySuggestionHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 
 }
+
+func RegisterVoteHandler(w http.ResponseWriter, r *http.Request) {
+
+	username := r.URL.Query().Get("username")
+	musicId := r.URL.Query().Get("musicId")
+
+	pvs := mongo.NewPersistorVoluntarySuggestion()
+
+	voluntarySuggestion, err := pvs.Search(0, musicId)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	voluntarySuggestion.Votes++
+	voluntarySuggestion.Users = append(voluntarySuggestion.Users, username)
+	pvs.Update(voluntarySuggestion)
+
+	log.Println(string(musicId) + " " + string(username))
+	w.WriteHeader(http.StatusOK)
+}

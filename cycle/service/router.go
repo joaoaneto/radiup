@@ -32,6 +32,14 @@ var routes = Routes{
 		"/suggestion/list",
 		GetVoluntarySuggestionHandler,
 	},
+	// GET localhost:6969/suggestion/vote/username=netoax&mid=123i12ijasdija
+	// Search: how to get parameters go http
+	Route{
+		"RegisterVote",
+		"GET",
+		"/suggestion/vote",
+		RegisterVoteHandler,
+	},
 }
 
 func NewRouter() *mux.Router {
