@@ -1,8 +1,9 @@
 package service
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type Route struct {
@@ -21,25 +22,10 @@ var routes = Routes{
 	// CRUD
 
 	Route{
-		
-	},
-
-	Route{
-	
-	},
-
-	Route{
-		
-	},
-
-	Route{
-	
-	},
-
-	//Authentication
-
-	Route{
-		
+		"GenerateVolSuggestionsPlaylist",
+		"POST",
+		"/playlist/generate",
+		GenerateVolSuggestionsPlaylistHandler,
 	},
 }
 
