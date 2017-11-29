@@ -6,14 +6,14 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type User struct {
+/*type User struct {
 	Name     string
 	Username string
 	Password []byte
 	BirthDay time.Time
 	Email    string
 	Sex      string
-}
+}*/
 
 type SimpleUser struct {
 	SimpleUser  User

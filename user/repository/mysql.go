@@ -29,6 +29,9 @@ func NewMySQLConfig() *MySQLConfig {
 
 	db.CreateTable(&model.User{})
 	db.CreateTable(&model.SpotifyToken{})
+	
+	db.CreateTable(&model.SimpleUser{})
+	db.CreateTable(&model.AdminUser{})
 
 	db.AutoMigrate(&model.SpotifyToken{}, &model.User{})
 	db.LogMode(true)
@@ -59,9 +62,9 @@ func NewSimpleUserPersistor(mysqlcfg *MySQLConfig) SimpleUserManager {
 	return SimpleUserPersistor{mysqlcfg}
 }
 
-func (sup SimpleUserPersistor) Create(u *model.User) error {
+func (sup SimpleUserPersistor) Create(su *model.SimpleUser) error {
 
-	err := sup.db.DbInstance.Create(u).Error
+	err := sup.db.DbInstance.Create(su).Error
 	if err != nil {
 		return err
 	}
@@ -69,9 +72,9 @@ func (sup SimpleUserPersistor) Create(u *model.User) error {
 	return nil
 }
 
-func (sup SimpleUserPersistor) Update(u *model.User) error {
+func (sup SimpleUserPersistor) Update(su *model.SimpleUser) error {
 
-	err := sup.db.DbInstance.Save(u).Error
+	err := sup.db.DbInstance.Save(su).Error
 	if err != nil {
 		return err
 	}
@@ -81,17 +84,17 @@ func (sup SimpleUserPersistor) Update(u *model.User) error {
 
 func (sup SimpleUserPersistor) Remove(username string) error {
 
-	user, err := sup.Search(username)
+	simpleUser, err := sup.Search(username)
 	if err != nil {
 		return err
 	}
 
-	err = sup.db.DbInstance.Delete(&user).Error
+	err = sup.db.DbInstance.Delete(&simpleUser).Error
 	if err != nil {
 		return err
 	}
 
-	err = sup.db.DbInstance.Where(&model.SpotifyToken{UserID: user.UserID}).Delete(&model.SpotifyToken{}).Error
+	err = sup.db.DbInstance.Where(&model.SpotifyToken{FKUserID: simpleUser.UserID}).Delete(&model.SpotifyToken{}).Error
 	if err != nil {
 		return err
 	}
@@ -99,18 +102,83 @@ func (sup SimpleUserPersistor) Remove(username string) error {
 	return nil
 }
 
-func (sup SimpleUserPersistor) Search(username string) (model.User, error) {
+func (sup SimpleUserPersistor) Search(username string) (model.SimpleUser, error) {
 
-	user := model.User{}
+	simpleUser := model.SimpleUser{}
 
-	err := sup.db.DbInstance.Where("username = ?", username).First(&user).Error
+	err := sup.db.DbInstance.Where("username = ?", username).First(&simpleUser).Error
 	if err != nil {
-		return model.User{}, err
+		return model.SimpleUser{}, err
 	}
 
-	return user, nil
+	return simpleUser, nil
 }
 
-func (sup SimpleUserPersistor) SearchAll() ([]model.User, error) {
+func (sup SimpleUserPersistor) SearchAll() ([]model.SimpleUser, error) {
+	return nil, nil
+}
+
+type AdminUserPersistor struct {
+	db *MySQLConfig
+}
+
+func NewAdminUserPersistor(mysqlcfg *MySQLConfig) AdminUserManager {
+	return AdminUserPersistor{mysqlcfg}
+}
+
+func (aup AdminUserPersistor) Create(au *model.AdminUser) error {
+
+	err := aup.db.DbInstance.Create(au).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (aup AdminUserPersistor) Update(au *model.AdminUser) error {
+
+	err := aup.db.DbInstance.Save(au).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (aup AdminUserPersistor) Remove(username string) error {
+
+	adminUser, err := aup.Search(username)
+	if err != nil {
+		return err
+	}
+
+	err = aup.db.DbInstance.Delete(&adminUser).Error
+	if err != nil {
+		return err
+	}
+
+	err = aup.db.DbInstance.Where(&model.SpotifyToken{FKUserID: adminUser.UserID}).Delete(&model.SpotifyToken{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (aup AdminUserPersistor) Search(username string) (model.AdminUser, error) {
+
+	adminUser := model.AdminUser{}
+
+	err := aup.db.DbInstance.Where("username = ?", username).First(&adminUser).Error
+	
+	if err != nil {
+		return model.AdminUser{}, err
+	}
+
+	return adminUser, nil
+}
+
+func (aup AdminUserPersistor) SearchAll() ([]model.AdminUser, error) {
 	return nil, nil
 }

@@ -32,6 +32,13 @@ type MusicManager interface {
 	Search(id string) (cycle.Music, error)
 }
 
+type VoluntarySuggestionManager interface {
+	Register(cycleID int, vs cycle.VoluntarySuggestion) error
+	SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error)
+	Search(cycleID int, musicID string) (cycle.VoluntarySuggestion, error)
+	Update(vs cycle.VoluntarySuggestion) error
+}
+/*
 type SimpleUserManager interface {
 	Create(u cycle.SimpleUser) error
 	Update(registered_user string,
@@ -54,10 +61,4 @@ type AdminUserManager interface {
 	Search(username string) (cycle.AdminUser, error)
 	SearchAll() ([]cycle.AdminUser, error)
 }
-
-type VoluntarySuggestionManager interface {
-	Register(cycleID int, vs cycle.VoluntarySuggestion) error
-	SearchAll(cycleID int) ([]cycle.VoluntarySuggestion, error)
-	Search(cycleID int, musicID string) (cycle.VoluntarySuggestion, error)
-	Update(vs cycle.VoluntarySuggestion) error
-}
+*/

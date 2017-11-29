@@ -382,8 +382,8 @@ func (p VoluntarySuggestionPersistor) Update(vs cycle.VoluntarySuggestion) error
 
 }*/
 
-/*User mongo implementations*/
-
+/*
+//User mongo implementations
 type SimpleUserPersistor struct {
 	db *dbconf.DbConfig
 }
@@ -561,3 +561,4 @@ func (ap AdminUserPersistor) SearchAll() ([]cycle.AdminUser, error) {
 
 	return result, err
 }
+*/

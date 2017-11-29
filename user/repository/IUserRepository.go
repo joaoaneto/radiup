@@ -5,9 +5,17 @@ import (
 )
 
 type SimpleUserManager interface {
-	Create(u *model.User) error
-	Update(u *model.User) error
+	Create(su *model.SimpleUser) error
+	Update(su *model.SimpleUser) error
 	Remove(username string) error
-	Search(username string) (model.User, error)
-	SearchAll() ([]model.User, error)
+	Search(username string) (model.SimpleUser, error)
+	SearchAll() ([]model.SimpleUser, error)
+}
+
+type AdminUserManager interface {
+	Create(au *model.AdminUser) error
+	Update(au *model.AdminUser) error
+	Remove(username string) error
+	Search(username string) (model.AdminUser, error)
+	SearchAll() ([]model.AdminUser, error)
 }

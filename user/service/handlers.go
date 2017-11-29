@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"time"
+	//"time"
 
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
@@ -34,28 +34,53 @@ type Auth struct {
 
 func RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 
-	user := model.User{BirthDay: time.Now()}
+	userType := r.Header.Get("user-type")
 
-	decoder := json.NewDecoder(r.Body)
+	if(userType == "1"){
+		
+		simpleUser := model.SimpleUser{/*BirthDay: time.Now()*/}
 
-	err := decoder.Decode(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
+		decoder := json.NewDecoder(r.Body)
+		
+		err := decoder.Decode(&simpleUser)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		fmt.Println(r.Body)
+
+		sup := repository.NewSimpleUserPersistor(Db)
+
+		err = sup.Create(&simpleUser)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	} else {
+		
+		adminUser := model.AdminUser{/*BidrthDay: time.Now()*/}
+
+		decoder := json.NewDecoder(r.Body)
+
+		err := decoder.Decode(&adminUser)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		fmt.Println(r.Body)
+
+		aup := repository.NewAdminUserPersistor(Db)
+
+		err = aup.Create(&adminUser)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
-
-	fmt.Println(r.Body)
-
-	sup := repository.NewSimpleUserPersistor(Db)
-
-	err = sup.Create(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
+	
 	w.WriteHeader(http.StatusCreated)
-
 }
 
 /*func notifyTest(account model.User) {
